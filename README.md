@@ -8,7 +8,7 @@
 
 -----
 
-Instead of the verbose "boiletplate"
+Instead of the verbose "boilerplate"
 
 ```python
 def main(): ...
