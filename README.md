@@ -8,15 +8,16 @@
 
 -----
 
-## Installation
+Instead of the verbose "boiletplate"
 
-```bash
-pip install mainpy
+```python
+def main(): ...
+
+if __name__ == '__main__':
+    main()
 ```
 
-*requires python > 3.7*
-
-## Usage
+mainpy can be used to write it as:
 
 ```python
 from mainpy import main
@@ -25,14 +26,26 @@ from mainpy import main
 def app(): ...
 ```
 
-Async functions will be automatically wrapped in `asyncio.run`.
+Similarly, the async boilerplate
+
+```python
+import asyncio
+
+async def main(): ...
+
+if __name__ == '__main__':
+    asyncio.run(main())
+```
+
+can be replaced with
 
 ```python
 @main
 async def async_app(): ...
 ```
 
-# Automatic uvloop usage
+
+## Automatic uvloop usage
 
 If you have [uvloop](https://github.com/MagicStack/uvloop) installed, mainpy
 will automatically call `uvloop.install()` before running your async main 
@@ -56,3 +69,12 @@ filter to display all warnings, and activate the
 @main(debug=True)
 def app(): ...
 ```
+
+
+## Installation
+
+```bash
+pip install mainpy
+```
+
+*requires python > 3.7*
