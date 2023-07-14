@@ -6,6 +6,7 @@ import asyncio
 import functools
 import os
 import sys
+from types import FrameType
 
 from typing import (
     Any,
@@ -15,7 +16,8 @@ from typing import (
     Coroutine,
     overload,
     TypeVar,
-    Union
+    Union,
+    Optional,
 )
 
 if sys.version_info >= (3, 10):
@@ -93,7 +95,14 @@ def main(
     if not callable(function):
         raise TypeError(f'expected a callable, got {type(function).__name__}')
 
-    if function.__module__ != '__main__':
+    if hasattr(sys, '_getframe'):
+        frame: Optional[FrameType] = sys._getframe(1).f_back  # noqa
+        assert frame is not None
+        name = frame.f_globals['__name__']
+    else:
+        name = function.__module__
+
+    if name != '__main__':
         return function
 
     if debug is None:
