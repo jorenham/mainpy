@@ -44,6 +44,13 @@ can be replaced with
 async def async_app(): ...
 ```
 
+It's also possible to run a main function from another module:
+
+```python
+from somewhere import app
+
+main(app)
+```
 
 ## Automatic uvloop usage
 
