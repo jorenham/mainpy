@@ -16,6 +16,8 @@ pytest = "^7.1"
 pyright = "^1.1"
 
 uvloop = "^0.17"
+click = "^8.1.5"
+typer = "^0.9.0"
 
 [tool.pyright]
 include = ["mainpy"]
