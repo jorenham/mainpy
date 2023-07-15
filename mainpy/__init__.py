@@ -80,7 +80,7 @@ def main(
     debug: bool | None = None,
     is_async: bool | None = None,
     use_uvloop: bool | None = None,
-) -> Union[Callable[[_XCallable[_R]]], _R]:
+) -> Union[_XCallable[_R], _R]:
     if function is None:
         return cast(
             Callable[[_XCallable[_R]], _R],
