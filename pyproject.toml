@@ -36,3 +36,4 @@ exclude = [".git", "dist",  "build", "**/__pycache__", "**/.pytest_cache"]
 venv = ".venv"
 pythonVersion = "3.8"
 pythonPlatform = "Linux"
+typeCheckingMode = "strict"

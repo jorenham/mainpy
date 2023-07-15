@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-__all__ = ('main', )
+__all__ = 'main', 
 
 import asyncio
 import functools
@@ -13,7 +13,6 @@ from typing import (
     Callable,
     cast,
     Coroutine,
-    overload,
     TypeVar,
     Union
 )
@@ -24,7 +23,6 @@ else:
     from typing_extensions import TypeAlias
 
 _T = TypeVar('_T')
-_F = TypeVar('_F', bound=Callable)
 _R = TypeVar('_R', bound=object)
 
 _SCallable: TypeAlias = Union[Callable[..., _T], Callable[[], _T]]
@@ -44,15 +42,16 @@ def _infer_debug() -> bool:
     env_debug = os.environ.get('DEBUG', '0')
     try:
         env_debug = int(env_debug)
-    except ValueError:
-        pass
+    except ValueError as e:
+        raise EnvironmentError('failed to parse the `DEBUG` env var') from e
+    
     return bool(env_debug)
 
 
 # noinspection PyPackageRequirements
 def _infer_uvloop() -> bool:
     try:
-        import uvloop
+        import uvloop  # pyright: ignore [reportUnusedImport]
     except ImportError:
         return False
     else:
@@ -71,14 +70,13 @@ def _enable_debug():
         faulthandler.enable()
 
 
-# noinspection PyPackageRequirements,PyUnresolvedReferences
 def main(
     function: _XCallable[_R] | None = None,
     *,
     debug: bool | None = None,
     is_async: bool | None = None,
     use_uvloop: bool | None = None,
-) -> Union[Callable[[_XCallable[_R]], _R], _R]:
+) -> Union[_XCallable[_R], _R]:
     if function is None:
         return cast(
             Callable[[_XCallable[_R]], _R],
@@ -105,18 +103,17 @@ def main(
     if is_async or is_async is None and asyncio.iscoroutinefunction(function):
         if use_uvloop or use_uvloop is None and _infer_uvloop():
             import uvloop
-            uvloop.install()
+            uvloop.install()  # pyright: ignore [reportUnknownMemberType]
 
         return asyncio.run(
             cast(Coroutine[Any, Any, _R], function()),
             debug=debug
         )
 
-    else:
-        return function()
+    return cast(_R, function())
 
 
 @main
-def __main():
+def __main():  # pyright: ignore [reportUnusedFunction]
     # this should never run
     assert False
