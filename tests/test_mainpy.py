@@ -1,3 +1,4 @@
+import inspect
 import sys
 import asyncio
 import pytest
@@ -7,10 +8,9 @@ import mainpy as mp
 
 def patch_module(monkeypatch, module):
     # Patch the module name in the frame
-    frame = sys._getframe(1).f_back  # noqa
+    frame = inspect.currentframe()
     assert frame is not None
-    f_globals = frame.f_globals
-    monkeypatch.setitem(f_globals, '__name__', module)
+    monkeypatch.setitem(frame.f_globals, '__name__', module)
 
     def _patch_module(fn):
         # Patch the module name in the function
@@ -18,7 +18,6 @@ def patch_module(monkeypatch, module):
         return fn
 
     return _patch_module
-
 
 
 @pytest.fixture
@@ -63,10 +62,7 @@ def test_async(monkeypatch):
         return await asyncio.sleep(0, 'spam')
 
     assert app == 'spam'
-    assert isinstance(
-        asyncio.get_event_loop_policy(),
-        asyncio.DefaultEventLoopPolicy
-    )
+    assert isinstance(asyncio.get_event_loop_policy(), asyncio.DefaultEventLoopPolicy)
 
 
 def test_async_implicit(no_uvloop, monkeypatch):
@@ -76,10 +72,7 @@ def test_async_implicit(no_uvloop, monkeypatch):
         return await asyncio.sleep(0, 'spam')
 
     assert app == 'spam'
-    assert isinstance(
-        asyncio.get_event_loop_policy(),
-        asyncio.DefaultEventLoopPolicy
-    )
+    assert isinstance(asyncio.get_event_loop_policy(), asyncio.DefaultEventLoopPolicy)
 
 
 def test_async_implicit_uvloop(monkeypatch):
@@ -91,7 +84,5 @@ def test_async_implicit_uvloop(monkeypatch):
     assert app == 'spam'
 
     import uvloop
-    assert isinstance(
-        asyncio.get_event_loop_policy(),
-        uvloop.EventLoopPolicy
-    )
+
+    assert isinstance(asyncio.get_event_loop_policy(), uvloop.EventLoopPolicy)
