@@ -28,6 +28,8 @@ typing_extensions = { version = "^4.1", python = "<3.10"}
 pytest = "^7.4"
 pyright = "^1.1"
 uvloop = "^0.17"
+click = "^8.1.5"
+typer = "^0.9.0"
 
 
 [tool.pyright]

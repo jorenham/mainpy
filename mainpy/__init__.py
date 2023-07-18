@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-__all__ = 'main', 
+__all__ = ('main',)
 
 import asyncio
 import functools
 import os
 import sys
+from types import FrameType
 
 from typing import (
     Any,
@@ -14,7 +15,8 @@ from typing import (
     cast,
     Coroutine,
     TypeVar,
-    Union
+    Union,
+    Optional,
 )
 
 if sys.version_info >= (3, 10):
@@ -44,7 +46,7 @@ def _infer_debug() -> bool:
         env_debug = int(env_debug)
     except ValueError as e:
         raise EnvironmentError('failed to parse the `DEBUG` env var') from e
-    
+
     return bool(env_debug)
 
 
@@ -63,10 +65,12 @@ def _enable_debug():
 
     if not env.get('PYTHONWARNINGS'):
         import warnings
+
         warnings.simplefilter('always')
 
     if not (env.get('PYTHONDEVMODE') or env.get('PYTHONFAULTHANDLER')):
         import faulthandler
+
         faulthandler.enable()
 
 
@@ -81,17 +85,27 @@ def main(
         return cast(
             Callable[[_XCallable[_R]], _R],
             functools.partial(
-                main,
-                debug=debug,
-                is_async=is_async,
-                use_uvloop=use_uvloop
-            )
+                main, debug=debug, is_async=is_async, use_uvloop=use_uvloop
+            ),
         )
 
     if not callable(function):
         raise TypeError(f'expected a callable, got {type(function).__name__}')
 
-    if function.__module__ != '__main__':
+    if function.__module__ == '__main__':
+        pass
+    elif hasattr(sys, '_getframe'):
+        # Get current frame, effectively identical to `inspect.currentframe()`
+        frame: Optional[FrameType] = \
+            sys._getframe(1)  # type: ignore[attr-defined]
+
+        # Make sure we have a frame
+        if not frame:
+            return function
+        # Get the name from the frame's globals and check if it's '__main__'
+        if frame.f_globals.get('__name__') != '__main__':
+            return function
+    else:
         return function
 
     if debug is None:
@@ -103,12 +117,10 @@ def main(
     if is_async or is_async is None and asyncio.iscoroutinefunction(function):
         if use_uvloop or use_uvloop is None and _infer_uvloop():
             import uvloop
+
             uvloop.install()  # pyright: ignore [reportUnknownMemberType]
 
-        return asyncio.run(
-            cast(Coroutine[Any, Any, _R], function()),
-            debug=debug
-        )
+        return asyncio.run(cast(Coroutine[Any, Any, _R], function()), debug=debug)
 
     return cast(_R, function())
 

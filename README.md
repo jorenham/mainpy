@@ -8,6 +8,8 @@
 
 -----
 
+## Basic Examples
+
 Instead of the verbose "boilerplate"
 
 ```python
@@ -44,6 +46,77 @@ can be replaced with
 async def async_app(): ...
 ```
 
+If, for some reason, you cannot or don't want to use a decorator, you can also call the decorator with the function as an argument:
+
+```python
+import mainpy
+
+
+def main(): ...
+
+
+mainpy.main(main)
+```
+
+## External Libraries
+
+
+### Click
+
+With `click` you can simply add the decorator as usual, as long as you keep in mind that it has to be the first decorator (i.e. above the `@click.command()`):
+
+```python
+import click
+
+import mainpy
+
+
+@mainpy.main
+@click.command()
+def click_command():
+    click.echo('Hello from click_command')
+```
+
+If you want to use `@click.group` you probably don't want to decorate the group because the decorator will immediately execute. In those cases you probably want to move the `mainpy.main(...)` execution to the bottom of the file:
+
+
+```python
+import click
+
+import mainpy
+
+
+@click.group()
+def group(): ...
+    
+
+@group.command()
+def command(): ...
+
+
+mainpy.main(group)
+```
+
+### Typer
+
+When using `typer` you also need to use the regular call instead of the decorator:
+
+```python
+import typer
+
+import mainpy
+
+
+app = typer.Typer()
+
+
+@app.command()
+def command():
+    typer.echo('typer.Typer()')
+
+
+mainpy.main(app)
+```
 
 ## Automatic uvloop usage
 
