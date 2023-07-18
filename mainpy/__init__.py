@@ -96,9 +96,11 @@ def main(
         pass
     elif hasattr(sys, '_getframe'):
         # Get current frame, effectively identical to `inspect.currentframe()`
-        frame: Optional[FrameType] = sys._getframe(1)
+        frame: Optional[FrameType] = \
+            sys._getframe(1)  # type: ignore[attr-defined]
+
         # Make sure we have a frame
-        if frame is None:
+        if not frame:
             return function
         # Get the name from the frame's globals and check if it's '__main__'
         if frame.f_globals.get('__name__') != '__main__':
