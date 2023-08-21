@@ -1,5 +1,4 @@
 import inspect
-import sys
 import asyncio
 import pytest
 
@@ -62,7 +61,8 @@ def test_async(monkeypatch):
         return await asyncio.sleep(0, 'spam')
 
     assert app == 'spam'
-    assert isinstance(asyncio.get_event_loop_policy(), asyncio.DefaultEventLoopPolicy)
+    assert isinstance(asyncio.get_event_loop_policy(),
+                      asyncio.DefaultEventLoopPolicy)
 
 
 def test_async_implicit(no_uvloop, monkeypatch):
@@ -72,7 +72,8 @@ def test_async_implicit(no_uvloop, monkeypatch):
         return await asyncio.sleep(0, 'spam')
 
     assert app == 'spam'
-    assert isinstance(asyncio.get_event_loop_policy(), asyncio.DefaultEventLoopPolicy)
+    assert isinstance(asyncio.get_event_loop_policy(),
+                      asyncio.DefaultEventLoopPolicy)
 
 
 def test_async_implicit_uvloop(monkeypatch):

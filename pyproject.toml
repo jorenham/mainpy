@@ -21,7 +21,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8.1"
 typing_extensions = { version = "^4.1", python = "<3.10"}
 
 [tool.poetry.group.dev.dependencies]
@@ -30,11 +30,14 @@ pyright = "^1.1"
 uvloop = "^0.17"
 click = "^8.1.5"
 typer = "^0.9.0"
+flake8 = "^6.1.0"
+ruff = "^0.0.285"
+codespell = "^2.2.5"
 
 
 [tool.pyright]
 include = ["mainpy"]
-exclude = [".git", "dist",  "build", "**/__pycache__", "**/.pytest_cache"]
+exclude = [".git", "dist",  "build", "**/__pycache__", "**/.pytest_cache", ".tox"]
 venv = ".venv"
 pythonVersion = "3.8"
 pythonPlatform = "Linux"
