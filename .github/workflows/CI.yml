@@ -34,3 +34,9 @@ jobs:
 
       - name: pytest
         run: poetry run py.test
+
+      - name: codespell
+        run: poetry run codespell .
+
+      - name: ruff
+        run: poetry run ruff check .

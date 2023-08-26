@@ -25,7 +25,7 @@ import mainpy
 @click.group()
 def click_group():
     click.echo('click.group()')
-    
+
 
 @click_group.command()
 def click_group_command():

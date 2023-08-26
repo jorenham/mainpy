@@ -53,10 +53,12 @@ def _infer_debug() -> bool:
 # noinspection PyPackageRequirements
 def _infer_uvloop() -> bool:
     try:
-        import uvloop  # pyright: ignore [reportUnusedImport]
+        import uvloop
     except ImportError:
         return False
     else:
+        # Make sure pyright and flake8 won't complain about the unused import
+        assert uvloop is not None
         return True
 
 
@@ -120,7 +122,8 @@ def main(
 
             uvloop.install()  # pyright: ignore [reportUnknownMemberType]
 
-        return asyncio.run(cast(Coroutine[Any, Any, _R], function()), debug=debug)
+        return asyncio.run(cast(Coroutine[Any, Any, _R], function()),
+                           debug=debug)
 
     return cast(_R, function())
 
