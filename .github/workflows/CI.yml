@@ -38,8 +38,5 @@ jobs:
       - name: codespell
         run: poetry run codespell .
 
-      - name: flake8
-        run: poetry run flake8
-
       - name: ruff
         run: poetry run ruff check .
