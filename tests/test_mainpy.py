@@ -95,6 +95,14 @@ def test_async_implicit_uvloop(monkeypatch: pytest.MonkeyPatch):
 
     assert app == 'spam'
 
-    import uvloop
+    policy = asyncio.get_event_loop_policy()
 
-    assert isinstance(asyncio.get_event_loop_policy(), uvloop.EventLoopPolicy)
+    try:
+        import uvloop
+    except ImportError:
+        assert isinstance(policy, asyncio.DefaultEventLoopPolicy)
+    else:
+        assert isinstance(
+            policy,
+            uvloop.EventLoopPolicy,  # pyright: ignore[reportUnknownMemberType]
+        )
