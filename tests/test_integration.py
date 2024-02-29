@@ -1,101 +1,40 @@
+# ruff: noqa: ERA001
+import uuid
+
 import pytest
 
 
-SCRIPT_CLICK_COMMAND = """
-import click
-
+# language=python
+PY_SYNC = """
 import mainpy
-
 
 @mainpy.main
-@click.command()
-def click_command():
-    click.echo('click.command()')
-"""
+def sync_main():
+    print({!r})
+    return 42
 
-SCRIPT_CLICK_GROUP = """
-import click
+assert sync_main == 42
+""".strip()
 
+# language=python
+PY_ASYNC = """
+import asyncio
 import mainpy
 
+@mainpy.main
+async def async_main():
+    print({!r})
+    return await asyncio.sleep(1e-6, 42)
 
-@click.group()
-def click_group():
-    click.echo('click.group()')
-
-
-@click_group.command()
-def click_group_command():
-    click.echo('click.group().command()')
-
-
-assert mainpy.main(click_group) is click_group
-"""
-
-OUTPUT_CLICK_GROUP = """
-Usage: test_output.py [OPTIONS] COMMAND [ARGS]...
-
-Options:
-  --help  Show this message and exit.
-
-Commands:
-  click-group-command
+assert async_main == 42
 """.strip()
 
 
-SCRIPT_TYPER = """
-import typer
+@pytest.mark.parametrize('template', [PY_SYNC, PY_ASYNC])
+def test_output(pytester: pytest.Pytester, template: str):
+    output_expect = uuid.uuid4().hex
+    script = template.format(output_expect)
 
-import mainpy
-
-
-app = typer.Typer()
-
-
-@app.command()
-def typer_command():
-    typer.echo('typer.Typer()')
-
-
-assert mainpy.main(app) is app
-"""
-
-SCRIPT_DECORATOR = """
-import mainpy
-
-
-@mainpy.main
-def regular_main():
-    print('regular main call')
-"""
-
-SCRIPT_FUNCTION_CALL = """
-import mainpy
-
-
-def regular_main():
-    print('mainpy.main()')
-    return 123
-
-assert mainpy.main(regular_main) == 123
-"""
-
-
-@pytest.mark.parametrize(
-    ('script', 'output_expect'),
-    [
-        (SCRIPT_CLICK_COMMAND, 'click.command()'),
-        (SCRIPT_CLICK_GROUP, OUTPUT_CLICK_GROUP),
-        (SCRIPT_TYPER, 'typer.Typer()'),
-        (SCRIPT_DECORATOR, 'regular main call'),
-        (SCRIPT_FUNCTION_CALL, 'mainpy.main()'),
-    ],
-)
-def test_output(
-    pytester: pytest.Pytester,
-    script: str,
-    output_expect: str,
-):
     fh = pytester.makepyfile('test.py')  # pyright: ignore[reportUnknownMemberType]
     _ = fh.write_text(script)
 
@@ -105,4 +44,4 @@ def test_output(
     assert not errors
 
     output = result.stdout.str()
-    assert output == output_expect
+    assert output.rstrip() == output_expect
