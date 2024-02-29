@@ -1,62 +1,73 @@
-import inspect
+# pyright: reportPrivateUsage=false
+
 import asyncio
+import inspect
+from collections.abc import Callable
+from typing import Any, TypeVar
+
 import pytest
 
 import mainpy as mp
 
 
-def patch_module(monkeypatch, module):
+_F = TypeVar('_F', bound=Callable[..., Any])
+
+
+def _patch_module(monkeypatch: pytest.MonkeyPatch, module: str):
     # Patch the module name in the frame
     frame = inspect.currentframe()
     assert frame is not None
     monkeypatch.setitem(frame.f_globals, '__name__', module)
 
-    def _patch_module(fn):
+    def __patch_module(fn: _F) -> _F:
         # Patch the module name in the function
         monkeypatch.setattr(fn, '__module__', module)
         return fn
 
-    return _patch_module
+    return __patch_module
 
 
-@pytest.fixture
+@pytest.fixture()
 def no_uvloop():
-    orig = mp._infer_uvloop  # noqa
+    orig = mp._infer_uvloop
     mp._infer_uvloop = lambda: False
-    yield
-    mp._infer_uvloop = orig
+
+    try:
+        yield
+    finally:
+        mp._infer_uvloop = orig
 
 
-def test_not_main(monkeypatch):
+def test_not_main(monkeypatch: pytest.MonkeyPatch):
     @mp.main
-    @patch_module(monkeypatch, 'spam')
+    @_patch_module(monkeypatch, 'spam')
     def app():
-        assert False
+        pytest.fail('not main')
 
     assert callable(app)
 
 
-def test_sync(monkeypatch):
+def test_sync(monkeypatch: pytest.MonkeyPatch):
     @mp.main(is_async=False)
-    @patch_module(monkeypatch, '__main__')
+    @_patch_module(monkeypatch, '__main__')
     def app():
         return 'spam'
 
     assert app == 'spam'
 
 
-def test_sync_implicit(monkeypatch):
+def test_sync_implicit(monkeypatch: pytest.MonkeyPatch):
     @mp.main
-    @patch_module(monkeypatch, '__main__')
+    @_patch_module(monkeypatch, '__main__')
     def app():
         return 'spam'
 
     assert app == 'spam'
 
 
-def test_async(monkeypatch):
+def test_async(monkeypatch: pytest.MonkeyPatch):
     @mp.main(is_async=True, use_uvloop=False)
-    @patch_module(monkeypatch, '__main__')
+    @_patch_module(monkeypatch, '__main__')
     async def app():
         return await asyncio.sleep(0, 'spam')
 
@@ -65,9 +76,9 @@ def test_async(monkeypatch):
                       asyncio.DefaultEventLoopPolicy)
 
 
-def test_async_implicit(no_uvloop, monkeypatch):
+def test_async_implicit(no_uvloop, monkeypatch: pytest.MonkeyPatch):
     @mp.main
-    @patch_module(monkeypatch, '__main__')
+    @_patch_module(monkeypatch, '__main__')
     async def app():
         return await asyncio.sleep(0, 'spam')
 
@@ -76,9 +87,9 @@ def test_async_implicit(no_uvloop, monkeypatch):
                       asyncio.DefaultEventLoopPolicy)
 
 
-def test_async_implicit_uvloop(monkeypatch):
+def test_async_implicit_uvloop(monkeypatch: pytest.MonkeyPatch):
     @mp.main
-    @patch_module(monkeypatch, '__main__')
+    @_patch_module(monkeypatch, '__main__')
     async def app():
         return await asyncio.sleep(0, 'spam')
 
