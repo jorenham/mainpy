@@ -1,21 +1,33 @@
 from __future__ import annotations
 
-
-__all__ = ('main',)
-
-
 import asyncio
 import functools
 import inspect
 import os
 import sys
-from typing import Any, Awaitable, Callable, Coroutine, TypeVar, Union, cast
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Awaitable,
+    Callable,
+    Coroutine,
+    TypeVar,
+    Union,
+    cast,
+)
+
+
+if TYPE_CHECKING:
+    import contextvars
 
 
 if sys.version_info < (3, 10):
     from typing_extensions import TypeAlias
 else:
     from typing import TypeAlias
+
+__all__ = ('main',)
+
 
 _T = TypeVar('_T')
 _R = TypeVar('_R', bound=object)
@@ -80,6 +92,7 @@ def main(
     debug: bool | None = None,
     is_async: bool | None = None,
     use_uvloop: bool | None = None,
+    context: contextvars.Context | None = None,
 ) -> _XCallable[_R] | _R:
     """
     Decorate a function to be the main entrypoint.
@@ -108,18 +121,32 @@ def main(
     if debug:
         _enable_debug()
 
-    if is_async or is_async is None and asyncio.iscoroutinefunction(function):
-        if use_uvloop or use_uvloop is None and _infer_uvloop():
+    if is_async is None:
+        is_async = asyncio.iscoroutinefunction(function)
+    if not is_async:
+        return cast(_R, function())
+
+    fn = cast(Callable[[], Coroutine[Any, Any, _R]], function())
+
+    if use_uvloop is None:
+        use_uvloop = _infer_uvloop()
+
+    if sys.version_info < (3, 11):
+        if use_uvloop:
             import uvloop
 
             uvloop.install()
 
-        return asyncio.run(
-            cast(Coroutine[Any, Any, _R], function()),
-            debug=debug,
-        )
+        return asyncio.run(fn(), debug=debug)
 
-    return cast(_R, function())
+    loop_factory = None
+    if use_uvloop:
+        import uvloop
+
+        loop_factory = uvloop.new_event_loop
+
+    with asyncio.Runner(debug=debug, loop_factory=loop_factory) as runner:
+        return runner.run(main(), context=context)
 
 
 @main
