@@ -9,8 +9,8 @@ on:
 
 jobs:
   lint:
+    timeout-minutes: 1
     runs-on: ubuntu-latest
-    timeout-minutes: 5
 
     steps:
       - name: checkout
@@ -26,7 +26,7 @@ jobs:
           cache: poetry
 
       - name: install
-        run: poetry install --without=test --sync
+        run: poetry install --only=lint --sync
 
       - name: codespell
         run: poetry run codespell .
@@ -34,16 +34,40 @@ jobs:
       - name: ruff check
         run: poetry run ruff check --output-format=github
 
+  typecheck:
+    timeout-minutes: 2
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python: ["3.8", "3.12"]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: install poetry
+        run: pipx install poetry
+
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+          cache: poetry
+
+      - name: install
+        run: poetry install --only=typecheck --sync
+
       - name: pyright
         run: poetry run pyright
 
   test:
-    timeout-minutes: 5
+    timeout-minutes: 2
 
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.8", "3.12"]
+        python: ["3.8", "3.12"]
 
     runs-on: ${{ matrix.os }}
 
@@ -57,11 +81,11 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python }}
           cache: poetry
 
       - name: install
-        run: poetry install --without=lint --with=test--gtihub --sync
+        run: poetry install --only=test,test-github --extras=uvloop --sync
 
       - name: pytest
         run: poetry run pytest

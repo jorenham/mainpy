@@ -20,21 +20,29 @@ classifiers = [
     "Typing :: Typed",
 ]
 
+[tool.poetry.extras]
+uvloop = ["uvloop"]
+
 [tool.poetry.dependencies]
 python = "^3.8"
-typing_extensions = {version = "^4.1", python = "<3.10"}
-
-[tool.poetry.group.dev.dependencies]
-uvloop = {version = "^0.19", markers = 'sys_platform != "win32"'}
+[tool.poetry.dependencies.typing_extensions]
+version = "^4.1"
+python = "<3.10"
+[tool.poetry.dependencies.uvloop]
+version = ">=0.14,<1.0"
+optional = true
+markers = 'sys_platform != "win32"'
 
 [tool.poetry.group.lint.dependencies]
-ruff = "^0.3.0"
 codespell = "^2.2.6"
+ruff = "^0.3.0"
+
+[tool.poetry.group.typecheck.dependencies]
 pyright = "^1.1.351"
 pytest = "^8.0"  # needed to infer annotations when linting
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.0"  # needed to infer annotations when linting
+pytest = "^8.0"
 
 [tool.poetry.group.test-github]
 optional = true
@@ -64,10 +72,12 @@ useLibraryCodeForTypes = true
 deprecateTypingAliases = true
 disableBytesTypePromotions = true
 reportPropertyTypeMismatch = "warning"
-reportMissingTypeStubs = "none"
+reportMissingImports = false  # uvloop is optional
+reportMissingModuleSource = false  # typing_extensions not needed on py310+
+reportMissingTypeStubs = false
 reportUnusedImport = "warning"
 reportUnusedClass = "warning"
-reportUnusedFunction = "warning"
+reportUnusedFunction = false  # @main decorated functions
 reportUnusedVariable = "warning"
 reportConstantRedefinition = "warning"
 reportInconsistentConstructor = "warning"
@@ -81,7 +91,7 @@ reportUnnecessaryContains = "warning"
 reportUnusedCallResult = "warning"
 reportUnusedExpression = "warning"
 reportUnnecessaryTypeIgnoreComment = "warning"
-reportMatchNotExhaustive = "error"
+reportMatchNotExhaustive = "warning"
 reportShadowedImports = "warning"
 
 

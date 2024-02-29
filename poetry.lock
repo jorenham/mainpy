@@ -215,7 +215,7 @@ files = [
 name = "uvloop"
 version = "0.19.0"
 description = "Fast implementation of asyncio event loop on top of libuv"
-optional = false
+optional = true
 python-versions = ">=3.8.0"
 files = [
     {file = "uvloop-0.19.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:de4313d7f575474c8f5a12e163f6d89c0a878bc49219641d49e6f1444369a90e"},
@@ -258,4 +258,4 @@ test = ["Cython (>=0.29.36,<0.30.0)", "aiohttp (==3.9.0b0)", "aiohttp (>=3.8.1)"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "d7ac328ed14737fa50618c17616f6e033435bcc178e7bccfbeeedc64d37afffb"
+content-hash = "7168941e525820a7d9a61e85d40b12a7cc4f456ad34e005ab7379abc3b56acbe"
