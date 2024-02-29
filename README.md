@@ -2,12 +2,12 @@
 
 -----
 
-[![PyPI version shields.io](https://img.shields.io/pypi/v/mainpy.svg)](PYPI)
-[![PyPI pyversions](https://img.shields.io/pypi/pyversions/mainpy.svg)](PYPI)
-[![PyPI license](https://img.shields.io/pypi/l/mainpy.svg)](PYPI)
-[![Actions status](https://github.com/jorenham/mainpy/workflows/CI/badge.svg)](CI)
-[![Pyright](https://microsoft.github.io/pyright/img/pyright_badge.svg)](PYRIGHT)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](RUFF)
+[![PyPI version shields.io](https://img.shields.io/pypi/v/mainpy.svg)][PYPI]
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/mainpy.svg)][PYPI]
+[![PyPI license](https://img.shields.io/pypi/l/mainpy.svg)][PYPI]
+[![Actions status](https://github.com/jorenham/mainpy/workflows/CI/badge.svg)][CI]
+[![Pyright](https://microsoft.github.io/pyright/img/pyright_badge.svg)][PYRIGHT]
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)][RUFF]
 
 -----
 
@@ -67,14 +67,14 @@ main(async_app)
 ## External Libraries
 
 Even though `mainpy` requires no other dependencies than `typing_extensions`
-(on Python < 3.10), it has optional support for [`uvloop`](UVLOOP), and plays
-nicely with popular CLI libraries, e.g. [`click`](CLICK) and [`typer`](TYPER).
+(on Python < 3.10), it has optional support for [`uvloop`][UVLOOP], and plays
+nicely with popular CLI libraries, e.g. [`click`][CLICK] and [`typer`][TYPER].
 
 ### `uvloop`
 
-If you have [uvloop](UVLOOP) installed, mainpy
-will automatically call `uvloop.install()` before running your async main
-function. This can be disabled by setting `use_uvloop=False`, e.g.:
+If you have [uvloop][UVLOOP] installed, mainpy will automatically call
+`uvloop.install()` before running your async main function.
+This can be disabled by setting `use_uvloop=False`, e.g.:
 
 ```python
 @main(use_uvloop=False)
@@ -83,7 +83,7 @@ async def app(): ...
 
 ### Click
 
-With [`click`](CLICK) you can simply add the decorator as usual.
+With [`click`][CLICK] you can simply add the decorator as usual.
 
 > [!IMPORTANT]
 > The `@mainpy.main` decorator must come *before* `@click.command()`.
@@ -117,7 +117,7 @@ mainpy.main(group)
 
 ### Typer
 
-A [`typer`](TYPER) internally does some initialization after a command
+A [`typer`][TYPER] internally does some initialization after a command
 has been defined.
 Instead of using `@mainpy.main` on the command itself, you should use
 `mainpy.main()` manually:
@@ -137,12 +137,12 @@ mainpy.main(command)
 
 ## Debug mode
 
-Optionally, Python's [development mode](DEVMODE) can be emulated by passing
+Optionally, Python's [development mode][DEVMODE] can be emulated by passing
 `debug=True` to `mainpy.main`. This does three things:
 
-- Enable the [faulthandler](FAULTHANDLER)
-- Configure [`warnings`](WARNINGS) to display all warnings
-- Runs `async` functions in [debug mode](ADEBUG)
+- Enable the [faulthandler][FAULTHANDLER]
+- Configure [`warnings`][WARNINGS] to display all warnings
+- Runs `async` functions in [debug mode][ADEBUG]
 
 ```python
 @main(debug=True)
@@ -151,19 +151,18 @@ def app(): ...
 
 ## Installation
 
-The `mainpy` package is available on [pypi](PYPI) for Python $\ge 3.8$:
+The `mainpy` package is available on [pypi][PYPI] for Python $\ge 3.8$:
 
 ```shell
 pip install mainpy
 ```
 
-Additionally, you can install the [`uvloop`](UVLOOP) extra which will install
+Additionally, you can install the [`uvloop`][UVLOOP] extra which will install
 `uvloop>=0.14` (unless you're on windows):
 
 ```shell
 pip install mainpy[uvloop]
 ```
-
 
 [PYPI]: https://pypi.org/project/mainpy/
 [CI]: https://github.com/jorenham/mainpy/actions
