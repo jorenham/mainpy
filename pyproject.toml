@@ -36,6 +36,11 @@ pytest = "^8.0"  # needed to infer annotations when linting
 [tool.poetry.group.test.dependencies]
 pytest = "^8.0"  # needed to infer annotations when linting
 
+[tool.poetry.group.test-github]
+optional = true
+[tool.poetry.group.test-github.dependencies]
+pytest-github-actions-annotate-failures = ">=0.2,<1.0"
+
 
 [tool.pyright]
 include = ["mainpy", "tests"]
