@@ -156,7 +156,7 @@ def main(
         if use_uvloop:
             import uvloop
 
-            uvloop.install()
+            uvloop.install()  # pyright: ignore[reportUnknownMemberType]
 
         return asyncio.run(func(), debug=debug)
 
@@ -171,6 +171,6 @@ def main(
 
 
 @main
-def __main():  # pyright: ignore [reportUnusedFunction]
+def __main():
     # this should never run
     raise AssertionError
