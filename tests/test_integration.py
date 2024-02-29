@@ -82,25 +82,27 @@ assert mainpy.main(regular_main) == 123
 
 
 @pytest.mark.parametrize(
-    ('script', 'stdout', 'stderr'),
+    ('script', 'output_expect'),
     [
-        (SCRIPT_CLICK_COMMAND, 'click.command()', ''),
-        (SCRIPT_CLICK_GROUP, OUTPUT_CLICK_GROUP, ''),
-        (SCRIPT_TYPER, 'typer.Typer()', ''),
-        (SCRIPT_DECORATOR, 'regular main call', ''),
-        (SCRIPT_FUNCTION_CALL, 'mainpy.main()', ''),
+        (SCRIPT_CLICK_COMMAND, 'click.command()'),
+        (SCRIPT_CLICK_GROUP, OUTPUT_CLICK_GROUP),
+        (SCRIPT_TYPER, 'typer.Typer()'),
+        (SCRIPT_DECORATOR, 'regular main call'),
+        (SCRIPT_FUNCTION_CALL, 'mainpy.main()'),
     ],
 )
 def test_output(
     pytester: pytest.Pytester,
     script: str,
-    stdout: str,
-    stderr: str,
+    output_expect: str,
 ):
     fh = pytester.makepyfile('test.py')  # pyright: ignore[reportUnknownMemberType]
     _ = fh.write_text(script)
 
     result = pytester.runpython(fh)
 
-    assert result.stdout.str() == stdout
-    assert result.stderr.str() == stderr
+    errors = result.stderr.str()
+    assert not errors
+
+    output = result.stdout.str()
+    assert output == output_expect

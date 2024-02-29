@@ -149,8 +149,6 @@ def main(
     if not is_async:
         return func()
 
-    fn = cast(_AFunc[Any], func())
-
     if use_uvloop is None:
         use_uvloop = _infer_uvloop()
 
@@ -160,7 +158,7 @@ def main(
 
             uvloop.install()
 
-        return asyncio.run(fn(), debug=debug)
+        return asyncio.run(func(), debug=debug)
 
     loop_factory = None
     if use_uvloop:
@@ -169,7 +167,7 @@ def main(
         loop_factory = uvloop.new_event_loop
 
     with asyncio.Runner(debug=debug, loop_factory=loop_factory) as runner:
-        return runner.run(main(), context=context)
+        return runner.run(func(), context=context)
 
 
 @main
