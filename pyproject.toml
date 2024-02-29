@@ -21,23 +21,176 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
-typing_extensions = { version = "^4.1", python = "<3.10"}
+python = "^3.8"
+typing_extensions = {version = "^4.1", python = "<3.10"}
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4"
-pyright = "^1.1"
-uvloop = "^0.17"
-click = "^8.1.5"
+uvloop = {version = "^0.19", markers = 'sys_platform != "win32"'}
+
+[tool.poetry.group.lint.dependencies]
+ruff = "^0.2.2"
+codespell = "^2.2.6"
+pyright = "^1.1.351"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.0"
+click = "^8.1.7"
 typer = "^0.9.0"
-ruff = "^0.0.285"
-codespell = "^2.2.5"
 
 
 [tool.pyright]
-include = ["mainpy"]
-exclude = [".git", "dist",  "build", "**/__pycache__", "**/.pytest_cache", ".tox"]
+include = ["mainpy", "tests"]
+exclude = [
+    "**/__pycache__",
+    ".git",
+    ".github",
+    ".hypothesis",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".vscode",
+    "dist",
+]
+venvPath = "."
 venv = ".venv"
 pythonVersion = "3.8"
-pythonPlatform = "Linux"
+pythonPlatform = "All"
 typeCheckingMode = "strict"
+useLibraryCodeForTypes = true
+
+deprecateTypingAliases = true
+disableBytesTypePromotions = true
+reportPropertyTypeMismatch = "warning"
+reportMissingTypeStubs = "none"
+reportUnusedImport = "warning"
+reportUnusedClass = "warning"
+reportUnusedFunction = "warning"
+reportUnusedVariable = "warning"
+reportConstantRedefinition = "warning"
+reportInconsistentConstructor = "warning"
+reportMissingTypeArgument = "warning"
+reportUninitializedInstanceVariable = "warning"
+reportCallInDefaultInitializer = "warning"
+reportUnnecessaryIsInstance = "warning"
+reportUnnecessaryCast = "warning"
+reportUnnecessaryComparison = "warning"
+reportUnnecessaryContains = "warning"
+reportUnusedCallResult = "warning"
+reportUnusedExpression = "warning"
+reportUnnecessaryTypeIgnoreComment = "warning"
+reportMatchNotExhaustive = "error"
+reportShadowedImports = "warning"
+
+
+[tool.ruff]
+src = ["mainpy", "tests"]
+target-version = "py38"
+line-length = 79
+indent-width = 4
+force-exclude = true
+extend-exclude = [
+    ".github",
+    ".vscode",
+    ".venv",
+    "py.typed",
+]
+
+[tool.ruff.lint]
+ignore-init-module-imports = true
+preview = true
+select = [
+    "F",        # pyflakes
+    "E",        # pycodestyle error
+    "W",        # pycodestyle warning
+    "C90",      # mccabe
+    "I",        # isort
+    "N",        # pep8-naming
+    "UP",       # pyupgrade
+    "YTT",      # flake8-2020
+    "ANN",      # flake8-annotations
+    "ASYNC",    # flake8-async
+    "S",        # flake8-bandit
+    "BLE",      # flake8-blind-except
+    "B",        # flake8-bugbear
+    "A",        # flake8-builtins
+    "COM",      # flake8-commas
+    "C4",       # flake8-comprehensions
+    "DTZ",      # flake8-datetimez
+    "T10",      # flake8-debugger
+    "EXE",      # flake8-executable
+    "FA",       # flake8-future-annotations
+    "ISC",      # flake8-implicit-str-concat
+    "ICN",      # flake8-import-conventions
+    "G",        # flake8-logging-format
+    "INP",      # flake8-no-pep420
+    "PIE",      # flake8-pie
+    "T20",      # flake8-print
+    "PYI",      # flake8-pyi
+    "PT",       # flake8-pytest-style
+    "Q",        # flake8-quotes
+    "RSE",      # flake8-raise
+    "RET",      # flake8-return
+    "SLF",      # flake8-self
+    "SLOT",     # flake8-slots
+    "SIM",      # flake8-simplify
+    "TID",      # flake8-tidy-imports
+    "TCH",      # flake8-type-checking
+    "ARG",      # flake8-unused-arguments
+    "PTH",      # flake8-use-pathlib
+    "ERA",      # eradicate
+    "PGH",      # pygrep-hooks
+    "PL",       # pylint
+    "TRY",      # tryceratops
+    "FLY",      # flynt
+    "PERF",     # perflint,
+    "FURB",     # refurb
+    "LOG",      # flake8-logging
+    "RUF",      # ruff
+]
+extend-ignore = [
+    # flake8-annotations
+    "ANN001",   # missing-type-function-argument (deprecated)
+    "ANN002",   # missing-type-args (deprecated)
+    "ANN401",   # any-type
+    # flake8-bandit
+    "S101",     # assert
+    # pylint
+    "PLC0415",  # import-outside-top-level
+    "PLW1641",  # eq-without-hash (bug: doesn't consider super)
+    # tryceratops
+    "TRY003",   # raise-vanilla-args
+]
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = [
+    "F401",     # pyflakes: unused-import
+]
+"tests/*" = [
+    "D",        # pydocstyle
+    "ANN",      # flake8-annotations
+]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 79
+
+[tool.ruff.lint.isort]
+case-sensitive = true
+combine-as-imports = true
+force-wrap-aliases = true
+known-first-party = ["mainpy"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+ignore-decorators = ["typing.overload"]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.format]
+docstring-code-format = true
+quote-style = "single"
+indent-style = "space"
+line-ending = "lf"
+skip-magic-trailing-comma = true
+
+[tool.codespell]
+skip = "./dist,./site,*.lock,*.pyc"
+context = 2
