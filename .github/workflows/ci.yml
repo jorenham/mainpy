@@ -40,7 +40,7 @@ jobs:
 
     strategy:
       matrix:
-        python: ["3.8", "3.12"]
+        python-version: ["3.8", "3.12"]
 
     steps:
       - name: checkout
@@ -52,7 +52,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.8
+          python-version: ${{ matrix.python-version }}
           cache: poetry
 
       - name: install
@@ -67,7 +67,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python: ["3.8", "3.12"]
+        python-version: ["3.8", "3.12"]
 
     runs-on: ${{ matrix.os }}
 
@@ -81,11 +81,16 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python }}
+          python-version: ${{ matrix.python-version }}
           cache: poetry
 
       - name: install
-        run: poetry install --only=test,test-github --extras=uvloop --sync
+        run: >
+          poetry install
+          --extras uvloop
+          --without lint
+          --with test-github
+          --sync
 
       - name: pytest
         run: poetry run pytest
