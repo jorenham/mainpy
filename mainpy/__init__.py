@@ -8,12 +8,12 @@ import sys
 from typing import (
     TYPE_CHECKING,
     Any,
-    Awaitable,
     Callable,
     Coroutine,
+    Protocol,
     TypeVar,
-    Union,
     cast,
+    overload,
 )
 
 
@@ -29,12 +29,18 @@ else:
 __all__ = ('main',)
 
 
-_T = TypeVar('_T')
-_R = TypeVar('_R', bound=object)
+_R = TypeVar('_R')
+_F = TypeVar('_F', bound=Callable[..., Any])
 
-_SCallable: TypeAlias = Union[Callable[..., _T], Callable[[], _T]]
-_ACallable: TypeAlias = _SCallable[Awaitable[_R]]
-_XCallable: TypeAlias = Union[_SCallable[_R], _ACallable[_R]]
+_SFunc: TypeAlias = Callable[[], _R]
+_AFunc: TypeAlias = _SFunc[Coroutine[Any, None, _R]]
+
+
+class _MainDecorator(Protocol):
+    @overload
+    def __call__(self, __f: _AFunc[_R], /) -> _R: ...
+    @overload
+    def __call__(self, __f: _SFunc[_R], /) -> _R: ...
 
 
 def _infer_debug() -> bool:
@@ -86,35 +92,52 @@ def _enable_debug():
         faulthandler.enable()
 
 
+@overload
+def main(__f: _AFunc[_R], /) -> _R | _AFunc[_R]: ...
+@overload
+def main(__f: _SFunc[_R], /) -> _R | _SFunc[_R]: ...
+
+@overload
 def main(
-    function: _XCallable[_R] | None = None,
+    *,
+    debug: bool | None = ...,
+    is_async: bool | None = ...,
+    use_uvloop: bool | None = ...,
+    context: contextvars.Context | None = ...,
+) -> _MainDecorator: ...
+
+
+def main(
+    func: _F | None = None,
+    /,
     *,
     debug: bool | None = None,
     is_async: bool | None = None,
     use_uvloop: bool | None = None,
     context: contextvars.Context | None = None,
-) -> _XCallable[_R] | _R:
+) -> _MainDecorator | _F | Any:
     """
     Decorate a function to be the main entrypoint.
     """
-    if function is None:
+    if func is None:
         return cast(
-            Callable[[_XCallable[_R]], _R],
+            _MainDecorator,
             functools.partial(
                 main,
                 debug=debug,
                 is_async=is_async,
                 use_uvloop=use_uvloop,
+                context=context,
             ),
         )
 
-    if not callable(function):
-        raise TypeError(f'expected a callable, got {function!r}')
+    if not callable(func):
+        raise TypeError(f'expected a callable, got {func!r}')
 
-    if function.__module__ != '__main__':
+    if func.__module__ != '__main__':
         frame = inspect.currentframe()
         if not frame or frame.f_globals.get('__name__') != '__main__':
-            return function
+            return func
 
     if debug is None:
         debug = _infer_debug()
@@ -122,11 +145,11 @@ def main(
         _enable_debug()
 
     if is_async is None:
-        is_async = asyncio.iscoroutinefunction(function)
+        is_async = asyncio.iscoroutinefunction(func)
     if not is_async:
-        return cast(_R, function())
+        return func()
 
-    fn = cast(Callable[[], Coroutine[Any, Any, _R]], function())
+    fn = cast(_AFunc[Any], func())
 
     if use_uvloop is None:
         use_uvloop = _infer_uvloop()
