@@ -147,17 +147,12 @@ def main(
         use_uvloop = _infer_uvloop()
 
     if sys.version_info < (3, 11):
-        run_fn = asyncio.run
-
         if use_uvloop:
             import uvloop
 
-            if hasattr(uvloop, 'run'):
-                run_fn = uvloop.run
-            else:
-                uvloop.install()  # pyright: ignore[reportUnknownMemberType]
+            uvloop.install()  # pyright: ignore[reportUnknownMemberType]
 
-        return run_fn(func(), debug=debug)
+        return asyncio.run(func(), debug=debug)
 
     loop_factory = None
     if use_uvloop:
