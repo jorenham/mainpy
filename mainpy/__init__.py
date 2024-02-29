@@ -1,35 +1,47 @@
 from __future__ import annotations
 
-__all__ = ('main',)
-
 import asyncio
 import functools
+import importlib.util
+import inspect
 import os
 import sys
-from types import FrameType
-
 from typing import (
+    TYPE_CHECKING,
     Any,
-    Awaitable,
     Callable,
-    cast,
     Coroutine,
+    Protocol,
     TypeVar,
-    Union,
-    Optional,
+    cast,
+    overload,
 )
 
-if sys.version_info >= (3, 10):
-    from typing import TypeAlias
-else:
+
+if TYPE_CHECKING:
+    import contextvars
+
+
+if sys.version_info < (3, 10):
     from typing_extensions import TypeAlias
+else:
+    from typing import TypeAlias
 
-_T = TypeVar('_T')
-_R = TypeVar('_R', bound=object)
+__all__ = ('main',)
 
-_SCallable: TypeAlias = Union[Callable[..., _T], Callable[[], _T]]
-_ACallable: TypeAlias = _SCallable[Awaitable[_R]]
-_XCallable: TypeAlias = Union[_SCallable[_R], _ACallable[_R]]
+
+_R = TypeVar('_R')
+_F = TypeVar('_F', bound=Callable[..., Any])
+
+_SFunc: TypeAlias = Callable[[], _R]
+_AFunc: TypeAlias = _SFunc[Coroutine[Any, None, _R]]
+
+
+class _MainDecorator(Protocol):
+    @overload
+    def __call__(self, __f: _AFunc[_R], /) -> _R: ...
+    @overload
+    def __call__(self, __f: _SFunc[_R], /) -> _R: ...
 
 
 def _infer_debug() -> bool:
@@ -45,24 +57,23 @@ def _infer_debug() -> bool:
     try:
         env_debug = int(env_debug)
     except ValueError as e:
-        raise EnvironmentError('failed to parse the `DEBUG` env var') from e
+        raise OSError(
+            f'Invalid value for `DEBUG` env var: {env_debug!r}',
+        ) from e
 
     return bool(env_debug)
 
 
-# noinspection PyPackageRequirements
 def _infer_uvloop() -> bool:
-    try:
-        import uvloop
-    except ImportError:
-        return False
-    else:
-        # Make sure pyright and flake8 won't complain about the unused import
-        assert uvloop is not None
+    """Check whether uvloop is installed."""
+    if 'uvloop' in sys.modules:
         return True
+
+    return importlib.util.find_spec('uvloop') is not None
 
 
 def _enable_debug():
+    """Enable debug mode."""
     env = os.environ
 
     if not env.get('PYTHONWARNINGS'):
@@ -76,59 +87,84 @@ def _enable_debug():
         faulthandler.enable()
 
 
+@overload
+def main(__f: _AFunc[_R], /) -> _R | _AFunc[_R]: ...
+@overload
+def main(__f: _SFunc[_R], /) -> _R | _SFunc[_R]: ...
+
+@overload
 def main(
-    function: _XCallable[_R] | None = None,
+    *,
+    debug: bool | None = ...,
+    is_async: bool | None = ...,
+    use_uvloop: bool | None = ...,
+    context: contextvars.Context | None = ...,
+) -> _MainDecorator: ...
+
+
+def main(
+    func: _F | None = None,
+    /,
     *,
     debug: bool | None = None,
     is_async: bool | None = None,
     use_uvloop: bool | None = None,
-) -> Union[_XCallable[_R], _R]:
-    if function is None:
+    context: contextvars.Context | None = None,
+) -> _MainDecorator | _F | Any:
+    """
+    Decorate a function to be the main entrypoint.
+    """
+    if func is None:
         return cast(
-            Callable[[_XCallable[_R]], _R],
+            _MainDecorator,
             functools.partial(
-                main, debug=debug, is_async=is_async, use_uvloop=use_uvloop
+                main,
+                debug=debug,
+                is_async=is_async,
+                use_uvloop=use_uvloop,
+                context=context,
             ),
         )
 
-    if not callable(function):
-        raise TypeError(f'expected a callable, got {type(function).__name__}')
+    if not callable(func):
+        raise TypeError(f'expected a callable, got {func!r}')
 
-    if function.__module__ == '__main__':
-        pass
-    elif hasattr(sys, '_getframe'):
-        # Get current frame, effectively identical to `inspect.currentframe()`
-        frame: Optional[FrameType] = \
-            sys._getframe(1)  # type: ignore[attr-defined]
+    if func.__module__ != '__main__':
+        frame = inspect.currentframe()
+        if not frame or frame.f_globals.get('__name__') != '__main__':
+            return func
 
-        # Make sure we have a frame
-        if not frame:
-            return function
-        # Get the name from the frame's globals and check if it's '__main__'
-        if frame.f_globals.get('__name__') != '__main__':
-            return function
-    else:
-        return function
-
-    if debug is None:
-        debug = _infer_debug()
-
-    if debug:
+    if debug or debug is None and _infer_debug():
         _enable_debug()
 
-    if is_async or is_async is None and asyncio.iscoroutinefunction(function):
-        if use_uvloop or use_uvloop is None and _infer_uvloop():
+    if (
+        is_async is False
+        or is_async is None and not asyncio.iscoroutinefunction(func)
+    ):
+        return func()
+
+    if use_uvloop is None:
+        use_uvloop = _infer_uvloop()
+
+    if sys.version_info < (3, 11):
+        if use_uvloop:
             import uvloop
 
-            uvloop.install()  # pyright: ignore [reportUnknownMemberType]
+            uvloop.install()  # pyright: ignore[reportUnknownMemberType]
 
-        return asyncio.run(cast(Coroutine[Any, Any, _R], function()),
-                           debug=debug)
+        return asyncio.run(func(), debug=debug)
 
-    return cast(_R, function())
+    loop_factory = None
+    if use_uvloop:
+        import uvloop
+
+        loop_factory = uvloop.new_event_loop
+
+    with asyncio.Runner(debug=debug, loop_factory=loop_factory) as runner:
+        return runner.run(func(), context=context)
 
 
 @main
-def __main():  # pyright: ignore [reportUnusedFunction]
+def __main():
     # this should never run
-    assert False
+    raise AssertionError
