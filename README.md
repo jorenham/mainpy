@@ -2,9 +2,12 @@
 
 -----
 
-[![PyPI version shields.io](https://img.shields.io/pypi/v/mainpy.svg)](https://pypi.python.org/pypi/mainpy/)
-[![PyPI pyversions](https://img.shields.io/pypi/pyversions/mainpy.svg)](https://pypi.python.org/pypi/mainpy/)
-[![PyPI license](https://img.shields.io/pypi/l/mainpy.svg)](https://pypi.python.org/pypi/mainpy/)
+[![PyPI version shields.io](https://img.shields.io/pypi/v/mainpy.svg)](PYPI)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/mainpy.svg)](PYPI)
+[![PyPI license](https://img.shields.io/pypi/l/mainpy.svg)](PYPI)
+[![Actions status](https://github.com/jorenham/mainpy/workflows/CI/badge.svg)](CI)
+[![Pyright](https://microsoft.github.io/pyright/img/pyright_badge.svg)](PYRIGHT)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](RUFF)
 
 -----
 
@@ -33,95 +36,44 @@ Similarly, the async boilerplate
 ```python
 import asyncio
 
-async def main(): ...
+async def async_app(): ...
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    with asyncio.Runner() as runner:
+        runner.run(async_app())
 ```
 
 can be replaced with
 
 ```python
-@main
+from mainpy import main
+
+@mainpy.main
 async def async_app(): ...
 ```
 
-If, for some reason, you cannot or don't want to use a decorator, you can also call the decorator with the function as an argument:
+If you cannot want to use a decorator, you can also call the decorator
+with the function as an argument:
 
 ```python
-import mainpy
+def async_app(): ...
 
+# do things before running async_app()
 
-def main(): ...
-
-
-mainpy.main(main)
+main(async_app)
 ```
+
 
 ## External Libraries
 
+Even though `mainpy` requires no other dependencies than `typing_extensions`
+(on Python < 3.10), it has optional support for [`uvloop`](UVLOOP), and plays
+nicely with popular CLI libraries, e.g. [`click`](CLICK) and [`typer`](TYPER).
 
-### Click
+### `uvloop`
 
-With `click` you can simply add the decorator as usual, as long as you keep in mind that it has to be the first decorator (i.e. above the `@click.command()`):
-
-```python
-import click
-
-import mainpy
-
-
-@mainpy.main
-@click.command()
-def click_command():
-    click.echo('Hello from click_command')
-```
-
-If you want to use `@click.group` you probably don't want to decorate the group because the decorator will immediately execute. In those cases you probably want to move the `mainpy.main(...)` execution to the bottom of the file:
-
-
-```python
-import click
-
-import mainpy
-
-
-@click.group()
-def group(): ...
-    
-
-@group.command()
-def command(): ...
-
-
-mainpy.main(group)
-```
-
-### Typer
-
-When using `typer` you also need to use the regular call instead of the decorator:
-
-```python
-import typer
-
-import mainpy
-
-
-app = typer.Typer()
-
-
-@app.command()
-def command():
-    typer.echo('typer.Typer()')
-
-
-mainpy.main(app)
-```
-
-## Automatic uvloop usage
-
-If you have [uvloop](https://github.com/MagicStack/uvloop) installed, mainpy
-will automatically call `uvloop.install()` before running your async main 
+If you have [uvloop](UVLOOP) installed, mainpy
+will automatically call `uvloop.install()` before running your async main
 function. This can be disabled by setting `use_uvloop=False`, e.g.:
 
 ```python
@@ -129,25 +81,98 @@ function. This can be disabled by setting `use_uvloop=False`, e.g.:
 async def app(): ...
 ```
 
+### Click
+
+With [`click`](CLICK) you can simply add the decorator as usual.
+
+> [!IMPORTANT]
+> The `@mainpy.main` decorator must come *before* `@click.command()`.
+
+```python
+import mainpy
+import click
+
+@mainpy.main
+@click.command()
+def click_command():
+    click.echo('Hello from click_command')
+```
+
+The function that is decorated with `@mainpy.main` is executed immediately.
+But a `@click.group` must be defined *before* the command function.
+In this case, `mainpy.main` should be called *after* all has been setup:
+
+```python
+import mainpy
+import click
+
+@click.group()
+def group(): ...
+
+@group.command()
+def command(): ...
+
+mainpy.main(group)
+```
+
+### Typer
+
+A [`typer`](TYPER) internally does some initialization after a command
+has been defined.
+Instead of using `@mainpy.main` on the command itself, you should use
+`mainpy.main()` manually:
+
+```python
+import mainpy
+import typer
+
+app = typer.Typer()
+
+@app.command()
+def command():
+    typer.echo('typer.Typer()')
+
+mainpy.main(command)
+```
+
 ## Debug mode
 
-Optionally, python's [development mode](https://docs.python.org/3/library/devmode.html) 
-can be emulated by setting `debug=True` in `@main`. This will enable the
-[faulthandler](https://docs.python.org/3/library/faulthandler.html#faulthandler.enable), 
-configure the [`warnings`](https://docs.python.org/3/library/warnings.html) 
-filter to display all warnings, and activate the
-[asyncio debug mode](https://docs.python.org/3/library/asyncio-dev.html#asyncio-debug-mode):
+Optionally, Python's [development mode](DEVMODE) can be emulated by passing
+`debug=True` to `mainpy.main`. This does three things:
+
+- Enable the [faulthandler](FAULTHANDLER)
+- Configure [`warnings`](WARNINGS) to display all warnings
+- Runs `async` functions in [debug mode](ADEBUG)
 
 ```python
 @main(debug=True)
 def app(): ...
 ```
 
-
 ## Installation
 
-```bash
+The `mainpy` package is available on [pypi](PYPI) for Python $\ge 3.8$:
+
+```shell
 pip install mainpy
 ```
 
-*requires python > 3.7*
+Additionally, you can install the [`uvloop`](UVLOOP) extra which will install
+`uvloop>=0.14` (unless you're on windows):
+
+```shell
+pip install mainpy[uvloop]
+```
+
+
+[PYPI]: https://pypi.org/project/mainpy/
+[CI]: https://github.com/jorenham/mainpy/actions
+[PYRIGHT]: https://microsoft.github.io/pyright/
+[RUFF]: https://github.com/astral-sh/ruff
+[UVLOOP]: https://github.com/MagicStack/uvloop
+[CLICK]: https://github.com/pallets/click
+[TYPER]: https://github.com/tiangolo/typer
+[DEVMODE]: https://docs.python.org/3/library/devmode.html
+[FAULTHANDLER]: https://docs.python.org/3/library/faulthandler.html
+[WARNINGS]: https://docs.python.org/3/library/warnings.html
+[ADEBUG]: https://docs.python.org/3/library/asyncio-dev.html#asyncio-debug-mode
