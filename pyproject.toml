@@ -26,6 +26,7 @@ typing_extensions = {version = "^4.1", python = "<3.10"}
 
 [tool.poetry.group.dev.dependencies]
 uvloop = {version = "^0.19", markers = 'sys_platform != "win32"'}
+pytest = "^8.0"  # needed to infer annotations when linting
 
 [tool.poetry.group.lint.dependencies]
 ruff = "^0.2.2"
@@ -33,7 +34,6 @@ codespell = "^2.2.6"
 pyright = "^1.1.351"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.0"
 click = "^8.1.7"
 typer = "^0.9.0"
 
