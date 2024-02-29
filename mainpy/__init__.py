@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import functools
+import importlib.util
 import inspect
 import os
 import sys
@@ -68,13 +69,7 @@ def _infer_uvloop() -> bool:
     if 'uvloop' in sys.modules:
         return True
 
-    try:
-        import uvloop as _
-
-    except ImportError:
-        return False
-    else:
-        return True
+    return importlib.util.find_spec('uvloop') is not None
 
 
 def _enable_debug():
@@ -139,26 +134,30 @@ def main(
         if not frame or frame.f_globals.get('__name__') != '__main__':
             return func
 
-    if debug is None:
-        debug = _infer_debug()
-    if debug:
+    if debug or debug is None and _infer_debug():
         _enable_debug()
 
-    if is_async is None:
-        is_async = asyncio.iscoroutinefunction(func)
-    if not is_async:
+    if (
+        is_async is False
+        or is_async is None and not asyncio.iscoroutinefunction(func)
+    ):
         return func()
 
     if use_uvloop is None:
         use_uvloop = _infer_uvloop()
 
     if sys.version_info < (3, 11):
+        run_fn = asyncio.run
+
         if use_uvloop:
             import uvloop
 
-            uvloop.install()  # pyright: ignore[reportUnknownMemberType]
+            if hasattr(uvloop, 'run'):
+                run_fn = uvloop.run
+            else:
+                uvloop.install()  # pyright: ignore[reportUnknownMemberType]
 
-        return asyncio.run(func(), debug=debug)
+        return run_fn(func(), debug=debug)
 
     loop_factory = None
     if use_uvloop:

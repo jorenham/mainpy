@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import asyncio
+import importlib.util
 import inspect
 from typing import Any, Callable, TypeVar
 
@@ -72,8 +73,10 @@ def test_async(monkeypatch: pytest.MonkeyPatch):
         return await asyncio.sleep(0, 'spam')
 
     assert app == 'spam'
-    assert isinstance(asyncio.get_event_loop_policy(),
-                      asyncio.DefaultEventLoopPolicy)
+    assert isinstance(
+        asyncio.get_event_loop_policy(),
+        asyncio.DefaultEventLoopPolicy,
+    )
 
 
 def test_async_implicit(no_uvloop: None, monkeypatch: pytest.MonkeyPatch):
@@ -83,26 +86,25 @@ def test_async_implicit(no_uvloop: None, monkeypatch: pytest.MonkeyPatch):
         return await asyncio.sleep(0, 'spam')
 
     assert app == 'spam'
-    assert isinstance(asyncio.get_event_loop_policy(),
-                      asyncio.DefaultEventLoopPolicy)
+    assert isinstance(
+        asyncio.get_event_loop_policy(),
+        asyncio.DefaultEventLoopPolicy,
+    )
 
 
 def test_async_implicit_uvloop(monkeypatch: pytest.MonkeyPatch):
     @mp.main
     @_patch_module(monkeypatch, '__main__')
-    async def app():
-        return await asyncio.sleep(0, 'spam')
+    async def loop_module():
+        loop = asyncio.get_running_loop()
+        return loop.__module__.split('.')[0]
 
-    assert app == 'spam'
+    assert loop_module
+    assert isinstance(loop_module, str)
 
-    policy = asyncio.get_event_loop_policy()
-
-    try:
-        import uvloop
-    except ImportError:
-        assert isinstance(policy, asyncio.DefaultEventLoopPolicy)
+    if importlib.util.find_spec('uvloop') is None:
+        assert not mp._infer_uvloop()
+        assert loop_module == 'asyncio'
     else:
-        assert isinstance(
-            policy,
-            uvloop.EventLoopPolicy,  # pyright: ignore[reportUnknownMemberType]
-        )
+        assert mp._infer_uvloop()
+        assert loop_module == 'uvloop'
