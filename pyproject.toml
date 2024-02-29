@@ -90,7 +90,7 @@ reportUnnecessaryComparison = "warning"
 reportUnnecessaryContains = "warning"
 reportUnusedCallResult = "warning"
 reportUnusedExpression = "warning"
-reportUnnecessaryTypeIgnoreComment = "warning"
+reportUnnecessaryTypeIgnoreComment = false  # some aren't needed with `uvloop`
 reportMatchNotExhaustive = "warning"
 reportShadowedImports = "warning"
 
