@@ -662,4 +662,4 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "fc2c6ff4bc9c52a872e4b1e9f3bfbb5d56020044cf0f0eaebf792291aaa52e1e"
+content-hash = "d8a41543bd2c5210a47945d0ef0480a1805c3e8c3204cc5a125fb62aa1bc26b8"
