@@ -56,7 +56,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: ["3.8", "3.12"]
+        python-version: ["3.8", "3.12", "3.13-dev"]
 
     steps:
       - name: checkout
@@ -83,7 +83,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.8", "3.12"]
+        python-version: ["3.8", "3.12", "3.13-dev"]
 
     runs-on: ${{ matrix.os }}
 
