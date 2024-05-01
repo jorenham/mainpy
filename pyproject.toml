@@ -13,16 +13,13 @@ readme = "README.md"
 repository = "https://github.com/jorenham/mainpy"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "Natural Language :: English",
-    "Topic :: Software Development",
-    "Topic :: Utilities",
+    "Operating System :: OS Independent",
     "Typing :: Typed",
 ]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-typing_extensions = {version = "^4.1", python = "<3.10"}
+typing_extensions = {version = "^4.1", python = "<3.11"}
 
 [tool.poetry.dependencies.uvloop]
 version = ">=0.14,<1.0"
@@ -31,7 +28,7 @@ markers = 'sys_platform != "win32"'
 
 [tool.poetry.group.lint.dependencies]
 codespell = "^2.2.6"
-ruff = "^0.3.0"
+ruff = "^0.4.2"
 
 [tool.poetry.group.typecheck.dependencies]
 pyright = "^1.1.351"
@@ -43,7 +40,7 @@ pytest = "^8.0"
 [tool.poetry.group.test-github]
 optional = true
 [tool.poetry.group.test-github.dependencies]
-pytest-github-actions-annotate-failures = ">=0.2,<1.0"
+pytest-github-actions-annotate-failures = ">=0.2.0,<1"
 
 [tool.poetry.extras]
 uvloop = ["uvloop"]
@@ -98,13 +95,9 @@ src = ["mainpy", "tests"]
 target-version = "py38"
 line-length = 79
 indent-width = 4
+show-fixes = true
 force-exclude = true
-extend-exclude = [
-    ".github",
-    ".vscode",
-    ".venv",
-    "py.typed",
-]
+extend-exclude = [".github", ".vscode"]
 
 [tool.ruff.lint]
 ignore-init-module-imports = true
@@ -119,6 +112,7 @@ select = [
     "YTT",      # flake8-2020
     "ANN",      # flake8-annotations
     "ASYNC",    # flake8-async
+    "TRIO",     # flake8-trio
     "S",        # flake8-bandit
     "BLE",      # flake8-blind-except
     "B",        # flake8-bugbear
@@ -147,41 +141,30 @@ select = [
     "TCH",      # flake8-type-checking
     "ARG",      # flake8-unused-arguments
     "PTH",      # flake8-use-pathlib
+    "TD",       # flake8-todos
+    "FIX",      # flake8-fixme
     "ERA",      # eradicate
+    "PD",       # pandas-vet
     "PGH",      # pygrep-hooks
     "PL",       # pylint
     "TRY",      # tryceratops
     "FLY",      # flynt
+    "NPY",      # numpy
+    "AIR",      # airflow
     "PERF",     # perflint,
     "FURB",     # refurb
     "LOG",      # flake8-logging
     "RUF",      # ruff
 ]
-extend-ignore = [
-    # flake8-annotations
-    "ANN001",   # missing-type-function-argument (deprecated)
-    "ANN002",   # missing-type-args (deprecated)
-    "ANN401",   # any-type
-    # flake8-bandit
-    "S101",     # assert
-    # pylint
-    "PLC0415",  # import-outside-top-level
-    "PLW1641",  # eq-without-hash (bug: doesn't consider super)
-    # tryceratops
-    "TRY003",   # raise-vanilla-args
-    # ruff
-    "RUF021",   # parenthesize-chained-operators
+ignore = [
+    "PLC0415",  # pylint: import-outside-top-level
 ]
 [tool.ruff.lint.per-file-ignores]
-"**/__init__.py" = [
-    "F401",     # pyflakes: unused-import
-]
 "tests/*" = [
-    "D",        # pydocstyle
+    "S",        # flake8-bandit
     "ANN",      # flake8-annotations
     "ARG001",   # flake8-unused-arguments: unused-function-argument
     "SLF001",   # flake8-self: private-member-access
-    "PT004",    # flake8-pytest-style: pytest-missing-fixture-name-underscore
 ]
 
 [tool.ruff.lint.pycodestyle]
@@ -190,28 +173,21 @@ max-line-length = 79
 [tool.ruff.lint.isort]
 case-sensitive = true
 combine-as-imports = true
-force-wrap-aliases = true
 known-first-party = ["mainpy"]
 lines-after-imports = 2
 lines-between-types = 0
-no-lines-before = ["future", "local-folder"]
-split-on-trailing-comma = false
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-ignore-decorators = ["typing.overload"]
-
-[tool.ruff.lint.flake8-annotations]
-suppress-none-returning = true
 
 [tool.ruff.lint.flake8-quotes]
 inline-quotes = "single"
 
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+
 [tool.ruff.format]
 docstring-code-format = true
-quote-style = "single"
 indent-style = "space"
 line-ending = "lf"
+quote-style = "single"
 skip-magic-trailing-comma = true
 
 
