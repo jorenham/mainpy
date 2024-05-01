@@ -35,12 +35,12 @@ markers = 'sys_platform != "win32"'
 codespell = "^2.2.6"
 ruff = "^0.4.2"
 
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.0"
+
 [tool.poetry.group.typecheck.dependencies]
 basedpyright = "^1.11.0"
 pytest = "*"
-
-[tool.poetry.group.test.dependencies]
-pytest = "^8.0"
 
 [tool.poetry.group.test-github]
 optional = true
@@ -72,7 +72,7 @@ typeCheckingMode = "all"
 reportAny = false
 reportUnusedCallResult = false
 reportInvalidCast = false
-# appears to be broken
+# this appears to be broken since pyright 1.1.359
 reportUntypedFunctionDecorator = false
 # because of `sys.version_info()` conditionals
 reportUnreachable = false
