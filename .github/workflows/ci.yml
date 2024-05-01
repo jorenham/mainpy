@@ -8,6 +8,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     timeout-minutes: 1
@@ -34,6 +38,11 @@ jobs:
 
       - name: ruff check
         run: poetry run ruff check --output-format=github
+
+      - name: repo-review
+        uses: scientific-python/repo-review@v0.10.6
+        with:
+          plugins: sp-repo-review
 
   typecheck:
     timeout-minutes: 2
