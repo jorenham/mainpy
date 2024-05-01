@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import functools
 import inspect
 import os
 import sys
@@ -13,6 +12,7 @@ from typing import (
     Protocol,
     TypeVar,
     cast,
+    final,
     overload,
 )
 
@@ -28,17 +28,10 @@ else:
 __all__ = ('main',)
 
 _R = TypeVar('_R')
-_F = TypeVar('_F', bound=Callable[..., Any])
+_F = TypeVar('_F', bound=Callable[[], Any])
 
 _SFunc: TypeAlias = Callable[[], _R]
-_AFunc: TypeAlias = _SFunc[Coroutine[Any, None, _R]]
-
-
-class _MainDecorator(Protocol):
-    @overload
-    def __call__(self, __f: _AFunc[_R], /) -> _R: ...
-    @overload
-    def __call__(self, __f: _SFunc[_R], /) -> _R: ...
+_AFunc: TypeAlias = Callable[[], Coroutine[Any, Any, _R]]
 
 
 def _infer_debug() -> bool:
@@ -85,43 +78,69 @@ def _enable_debug() -> None:
         faulthandler.enable()
 
 
-@overload
-def main(__f: _AFunc[_R], /) -> _R | _AFunc[_R]: ...
-@overload
-def main(__f: _SFunc[_R], /) -> _R | _SFunc[_R]: ...
+@final
+class _MainDecorator(Protocol):
+    @overload
+    def __call__(self, func: _AFunc[_R]) -> _AFunc[_R] | _R: ...
+    @overload
+    def __call__(self, func: _SFunc[_R]) -> _SFunc[_R] | _R: ...
+
+
 @overload
 def main(
+    func: None = ...,
+    /,
     *,
     debug: bool | None = ...,
     is_async: bool | None = ...,
     use_uvloop: bool | None = ...,
     context: contextvars.Context | None = ...,
 ) -> _MainDecorator: ...
+@overload
+def main(
+    func: _AFunc[_R],
+    /,
+    *,
+    debug: bool | None = ...,
+    is_async: bool | None = ...,
+    use_uvloop: bool | None = ...,
+    context: contextvars.Context | None = ...,
+) -> _AFunc[_R] | _R: ...
+@overload
+def main(
+    func: _SFunc[_R],
+    /,
+    *,
+    debug: bool | None = ...,
+    is_async: bool | None = ...,
+    use_uvloop: bool | None = ...,
+    context: contextvars.Context | None = ...,
+) -> _SFunc[_R] | _R: ...
 
 
 def main(
-    func: _F | None = None,
+    func: _AFunc[_R] | _SFunc[_R] | None = None,
     /,
     *,
     debug: bool | None = None,
     is_async: bool | None = None,
     use_uvloop: bool | None = None,
     context: contextvars.Context | None = None,
-) -> _MainDecorator | _F | Any:
+) -> _MainDecorator | _AFunc[_R] | _SFunc[_R] | _R:
     """
     Decorate a function to be the main entrypoint.
     """
     if func is None:
-        return cast(
-            _MainDecorator,
-            functools.partial(
-                main,
+        def _main(_func: _F, /) -> _F | object:
+            return main(
+                _func,
                 debug=debug,
                 is_async=is_async,
                 use_uvloop=use_uvloop,
                 context=context,
-            ),
-        )
+            )
+
+        return cast(_MainDecorator, _main)
 
     if not callable(func):
         errmsg = f'expected a callable, got {type(func)}'
@@ -139,18 +158,18 @@ def main(
         is_async is None
         and not asyncio.iscoroutinefunction(func)
     ):
-        return func()
+        return cast(_R, func())
 
     if use_uvloop is None:
         use_uvloop = _infer_uvloop()
 
     if sys.version_info < (3, 11):
         if use_uvloop:
-            import uvloop
+            import uvloop  # pyright: ignore[reportMissingImports]
 
             uvloop.install()  # pyright: ignore[reportUnknownMemberType]
 
-        return asyncio.run(func(), debug=debug)
+        return asyncio.run(cast(Coroutine[Any, Any, _R], func()), debug=debug)
 
     loop_factory = None
     if use_uvloop:
@@ -163,6 +182,6 @@ def main(
 
 
 @main
-def __main() -> Never:
+def __main() -> Never:  # pyright: ignore[reportUnusedFunction]
     # this should never run
     raise AssertionError
