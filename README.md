@@ -2,12 +2,12 @@
 
 -----
 
-[![PyPI version shields.io](https://img.shields.io/pypi/v/mainpy.svg)][PYPI]
-[![PyPI pyversions](https://img.shields.io/pypi/pyversions/mainpy.svg)][PYPI]
-[![PyPI license](https://img.shields.io/pypi/l/mainpy.svg)][PYPI]
-[![Actions status](https://github.com/jorenham/mainpy/workflows/CI/badge.svg)][CI]
-[![Pyright](https://microsoft.github.io/pyright/img/pyright_badge.svg)][PYRIGHT]
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)][RUFF]
+[![mainpy - pypi version](https://img.shields.io/pypi/v/mainpy.svg)][PYPI]
+[![mainpy - python versions](https://img.shields.io/pypi/pyversions/mainpy.svg)][PYPI]
+[![mainpy - license](https://img.shields.io/pypi/l/mainpy.svg)][PYPI]
+[![mainpy - workflow status](https://github.com/jorenham/mainpy/workflows/CI/badge.svg)][CI]
+[![mainpy - basedpyright](https://img.shields.io/badge/basedpyright-checked-42b983)][BASEDPYRIGHT]
+[![mainpy - ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)][RUFF]
 
 -----
 
@@ -62,7 +62,6 @@ def async_app(): ...
 
 main(async_app)
 ```
-
 
 ## External Libraries
 
@@ -166,7 +165,7 @@ pip install mainpy[uvloop]
 
 [PYPI]: https://pypi.org/project/mainpy/
 [CI]: https://github.com/jorenham/mainpy/actions
-[PYRIGHT]: https://microsoft.github.io/pyright/
+[BASEDPYRIGHT]: https://detachhead.github.io/basedpyright/
 [RUFF]: https://github.com/astral-sh/ruff
 [UVLOOP]: https://github.com/MagicStack/uvloop
 [CLICK]: https://github.com/pallets/click

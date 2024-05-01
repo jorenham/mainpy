@@ -59,8 +59,8 @@ jobs:
       - name: install
         run: poetry install --only=typecheck --sync
 
-      - name: pyright
-        run: poetry run pyright
+      - name: basedpyright
+        run: poetry run basedpyright
 
   test:
     timeout-minutes: 2
