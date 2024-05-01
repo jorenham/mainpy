@@ -31,7 +31,7 @@ markers = 'sys_platform != "win32"'
 
 [tool.poetry.group.lint.dependencies]
 codespell = "^2.2.6"
-ruff = "^0.3.0"
+ruff = "^0.4.2"
 
 [tool.poetry.group.typecheck.dependencies]
 pyright = "^1.1.351"
@@ -157,7 +157,7 @@ select = [
     "LOG",      # flake8-logging
     "RUF",      # ruff
 ]
-extend-ignore = [
+ignore = [
     # flake8-annotations
     "ANN001",   # missing-type-function-argument (deprecated)
     "ANN002",   # missing-type-args (deprecated)
