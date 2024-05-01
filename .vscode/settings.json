@@ -5,5 +5,6 @@
   "git.pullBeforeCheckout": true,
   "python.analysis.typeCheckingMode": "strict",
   "python.testing.pytestEnabled": true,
-  "python.testing.unittestEnabled": false
+  "python.testing.unittestEnabled": false,
+  "python.languageServer": "None"
 }
