@@ -34,7 +34,7 @@ def no_uvloop():
     mp._infer_uvloop = lambda: False
 
     try:
-        yield
+        yield orig
     finally:
         mp._infer_uvloop = orig
 
@@ -96,6 +96,7 @@ def test_async_implicit_uvloop(monkeypatch: pytest.MonkeyPatch):
     @mp.main
     @_patch_module(monkeypatch, '__main__')
     async def loop_module():
+        await asyncio.sleep(0)
         loop = asyncio.get_running_loop()
         return loop.__module__.split('.')[0]
 

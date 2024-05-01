@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import asyncio
 import functools
-import importlib.util
 import inspect
 import os
 import sys
@@ -21,14 +20,12 @@ from typing import (
 if TYPE_CHECKING:
     import contextvars
 
-
-if sys.version_info < (3, 10):
-    from typing_extensions import TypeAlias
+if sys.version_info < (3, 11):
+    from typing_extensions import Never, TypeAlias
 else:
-    from typing import TypeAlias
+    from typing import Never, TypeAlias
 
 __all__ = ('main',)
-
 
 _R = TypeVar('_R')
 _F = TypeVar('_F', bound=Callable[..., Any])
@@ -57,9 +54,8 @@ def _infer_debug() -> bool:
     try:
         env_debug = int(env_debug)
     except ValueError as e:
-        raise OSError(
-            f'Invalid value for `DEBUG` env var: {env_debug!r}',
-        ) from e
+        errmsg = f'Invalid value for `DEBUG` env var: {env_debug!r}'
+        raise OSError(errmsg) from e
 
     return bool(env_debug)
 
@@ -69,10 +65,12 @@ def _infer_uvloop() -> bool:
     if 'uvloop' in sys.modules:
         return True
 
+    import importlib.util
+
     return importlib.util.find_spec('uvloop') is not None
 
 
-def _enable_debug():
+def _enable_debug() -> None:
     """Enable debug mode."""
     env = os.environ
 
@@ -91,7 +89,6 @@ def _enable_debug():
 def main(__f: _AFunc[_R], /) -> _R | _AFunc[_R]: ...
 @overload
 def main(__f: _SFunc[_R], /) -> _R | _SFunc[_R]: ...
-
 @overload
 def main(
     *,
@@ -127,19 +124,20 @@ def main(
         )
 
     if not callable(func):
-        raise TypeError(f'expected a callable, got {func!r}')
+        errmsg = f'expected a callable, got {type(func)}'
+        raise TypeError(errmsg)
 
     if func.__module__ != '__main__':
         frame = inspect.currentframe()
         if not frame or frame.f_globals.get('__name__') != '__main__':
             return func
 
-    if debug or debug is None and _infer_debug():
+    if debug or (debug is None and _infer_debug()):
         _enable_debug()
 
-    if (
-        is_async is False
-        or is_async is None and not asyncio.iscoroutinefunction(func)
+    if is_async is False or (
+        is_async is None
+        and not asyncio.iscoroutinefunction(func)
     ):
         return func()
 
@@ -165,6 +163,6 @@ def main(
 
 
 @main
-def __main():
+def __main() -> Never:
     # this should never run
     raise AssertionError
