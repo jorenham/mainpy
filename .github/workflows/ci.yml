@@ -39,6 +39,12 @@ jobs:
       - name: ruff check
         run: poetry run ruff check --output-format=github
 
+      - name: markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          config: ".markdownlint.yaml"
+          globs: "**/*.md"
+
       - name: repo-review
         uses: scientific-python/repo-review@v0.10.6
         with:
