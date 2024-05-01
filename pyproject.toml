@@ -31,7 +31,7 @@ markers = 'sys_platform != "win32"'
 
 [tool.poetry.group.lint.dependencies]
 codespell = "^2.2.6"
-ruff = "^0.3.0"
+ruff = ">=0.3,<0.5"
 
 [tool.poetry.group.typecheck.dependencies]
 pyright = "^1.1.351"
