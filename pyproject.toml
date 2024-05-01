@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "mainpy"
-version = "1.2.1"
+version = "1.3.0"
 description = "Simplify your project's main entrypoint definition with @main"
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
 license = "MIT"
