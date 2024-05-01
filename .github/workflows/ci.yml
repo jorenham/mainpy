@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   lint:
-    timeout-minutes: 1
+    timeout-minutes: 5
     runs-on: ubuntu-latest
 
     steps:
@@ -51,12 +51,12 @@ jobs:
           plugins: sp-repo-review
 
   typecheck:
-    timeout-minutes: 2
+    timeout-minutes: 5
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        python-version: ["3.8", "3.12"]
+        python-version: ["3.8", "3.12", "3.13-dev"]
 
     steps:
       - name: checkout
@@ -78,12 +78,12 @@ jobs:
         run: poetry run basedpyright
 
   test:
-    timeout-minutes: 2
+    timeout-minutes: 5
 
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.8", "3.12"]
+        python-version: ["3.8", "3.12", "3.13-dev"]
 
     runs-on: ${{ matrix.os }}
 
