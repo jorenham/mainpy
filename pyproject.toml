@@ -39,6 +39,7 @@ pre-commit = {version = "^3.7.0", python = ">=3.9"}
 tox = "^4.15.0"
 
 [tool.poetry.group.lint.dependencies]
+sp-repo-review = {version = "^2024.4.23", extras = ["cli"], python = ">=3.10"}
 codespell = "^2.2.6"
 ruff = "^0.4.2"
 
@@ -94,6 +95,19 @@ reportInvalidCast = false
 reportUntypedFunctionDecorator = false
 # because of `sys.version_info()` conditionals
 reportUnreachable = false
+
+
+[tool.repo-review]
+ignore = [
+    "PY004",    # README.md >> docs/
+    "PC110",    # optype's style >> (black | ruff-format)
+    "PC140",    # (based)pyright >> mypy (by several orders of magnitude)
+    "PC170",    # no .rst
+    "PC180",    # no .css or .js
+    "MY",       # (based)pyright >> mypy (by several orders of magnitude)
+    "RTD",      # README.md >> rtd
+]
+
 
 [tool.ruff]
 src = ["mainpy", "tests"]
