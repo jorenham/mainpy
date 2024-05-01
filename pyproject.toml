@@ -36,6 +36,7 @@ markers = 'sys_platform != "win32"'
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = {version = "^3.7.0", python = ">=3.9"}
+tox = "^4.15.0"
 
 [tool.poetry.group.lint.dependencies]
 codespell = "^2.2.6"
@@ -53,6 +54,19 @@ pytest = "*"
 optional = true
 [tool.poetry.group.test-github.dependencies]
 pytest-github-actions-annotate-failures = ">=0.2.0,<1"
+
+
+[tool.pytest.ini_options]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+filterwarnings = ["error"]
+log_cli_level = "INFO"
+minversion = "8.0"
+testpaths = ["tests"]
+xfail_strict = true
+
+
+[tool.codespell]
+context = 2
 
 
 [tool.basedpyright]
@@ -183,18 +197,43 @@ quote-style = "single"
 skip-magic-trailing-comma = true
 
 
-[tool.codespell]
-skip = "./dist,./site,*.lock,*.pyc"
-context = 2
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = true
+requires =
+    tox>=4
+envlist =
+    py{38,312}
+    codespell
+    ruff
+    basedpyright
 
+[testenv]
+description = pytest
+skip_install = true
+allowlist_externals = poetry
+commands_pre = poetry install --without=lint --extras=uvloop --sync
+commands = poetry run pytest
 
-[tool.pytest.ini_options]
-minversion = "8.0"
-addopts = [
-    "-ra",
-    "--strict-markers",
-    "--strict-config",
-]
-xfail_strict = true
-testpaths = ["tests"]
-filterwarnings = ["error"]
+[testenv:codespell]
+description = codespell
+skip_install = true
+allowlist_externals = poetry
+commands_pre = poetry install --only=lint --no-root --sync
+commands = poetry run codespell .
+
+[testenv:ruff]
+description = ruff check
+skip_install = true
+allowlist_externals = poetry
+commands_pre = poetry install --only=lint --no-root --sync
+commands = poetry run ruff check
+
+[testenv:basedpyright]
+description = basedpyright
+skip_install = true
+allowlist_externals = poetry
+commands_pre = poetry install --only=typecheck --no-root --sync
+commands = poetry run basedpyright
+"""
