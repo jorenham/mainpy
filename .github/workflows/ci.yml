@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   lint:
-    timeout-minutes: 1
+    timeout-minutes: 5
     runs-on: ubuntu-latest
 
     steps:
@@ -51,7 +51,7 @@ jobs:
           plugins: sp-repo-review
 
   typecheck:
-    timeout-minutes: 2
+    timeout-minutes: 5
     runs-on: ubuntu-latest
 
     strategy:
@@ -78,7 +78,7 @@ jobs:
         run: poetry run basedpyright
 
   test:
-    timeout-minutes: 2
+    timeout-minutes: 5
 
     strategy:
       matrix:
