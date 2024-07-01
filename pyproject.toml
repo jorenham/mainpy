@@ -48,7 +48,7 @@ tox = "^4.15.0"
 [tool.poetry.group.lint.dependencies]
 sp-repo-review = {version = "^2024.4.23", extras = ["cli"], python = ">=3.10"}
 codespell = "^2.2.6"
-ruff = "^0.4.2"
+ruff = ">=0.4.2,<0.6.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.2.0"
