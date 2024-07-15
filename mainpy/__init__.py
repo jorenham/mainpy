@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import inspect
 import os
 import sys
 from typing import (
@@ -81,9 +80,9 @@ def _enable_debug() -> None:
 @final
 class _MainDecorator(Protocol):
     @overload
-    def __call__(self, func: _AFunc[_R]) -> _AFunc[_R] | _R: ...
+    def __call__(self, func: _AFunc[_R], /) -> _AFunc[_R] | _R: ...
     @overload
-    def __call__(self, func: _SFunc[_R]) -> _SFunc[_R] | _R: ...
+    def __call__(self, func: _SFunc[_R], /) -> _SFunc[_R] | _R: ...
 
 
 @overload
@@ -116,8 +115,6 @@ def main(
     use_uvloop: bool | None = ...,
     context: contextvars.Context | None = ...,
 ) -> _SFunc[_R] | _R: ...
-
-
 def main(
     func: _AFunc[_R] | _SFunc[_R] | None = None,
     /,
@@ -147,6 +144,8 @@ def main(
         raise TypeError(errmsg)
 
     if func.__module__ != '__main__':
+        import inspect
+
         frame = inspect.currentframe()
         if not frame or frame.f_globals.get('__name__') != '__main__':
             return func
