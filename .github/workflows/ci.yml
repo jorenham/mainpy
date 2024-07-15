@@ -31,7 +31,7 @@ jobs:
           cache: poetry
 
       - name: install
-        run: poetry install --only=lint --sync
+        run: poetry install
 
       - name: codespell
         run: poetry run codespell .
@@ -46,7 +46,7 @@ jobs:
           globs: "**/*.md"
 
       - name: repo-review
-        uses: scientific-python/repo-review@v0.10.6
+        uses: scientific-python/repo-review@v0.11.0
         with:
           plugins: sp-repo-review
 
@@ -72,7 +72,7 @@ jobs:
           cache: poetry
 
       - name: install
-        run: poetry install --only=typecheck --sync
+        run: poetry install
 
       - name: basedpyright
         run: poetry run basedpyright
@@ -101,12 +101,7 @@ jobs:
           cache: poetry
 
       - name: install
-        run: >
-          poetry install
-          --extras uvloop
-          --without lint
-          --with test-github
-          --sync
+        run: poetry install --extras uvloop --with test-github --sync
 
       - name: pytest
         run: poetry run pytest
