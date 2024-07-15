@@ -217,39 +217,30 @@ skip-magic-trailing-comma = true
 legacy_tox_ini = """
 [tox]
 isolated_build = true
-requires =
-    tox>=4
+requires = tox>=4
 envlist =
-    py{38,312,313}
-    codespell
-    ruff
-    basedpyright
+    repo-review
+    pre-commit
+    py{38,39,310,311.312,313}
 
 [testenv]
 description = pytest
 skip_install = true
 allowlist_externals = poetry
-commands_pre = poetry install --without=lint --extras=uvloop --sync
+commands_pre = poetry install --extras=uvloop
 commands = poetry run pytest
 
-[testenv:codespell]
-description = codespell
+[testenv:pre-commit]
+description = pre-commit
 skip_install = true
 allowlist_externals = poetry
-commands_pre = poetry install --only=lint --no-root --sync
-commands = poetry run codespell .
+commands_pre = poetry install
+commands = poetry run pre-commit run --all-files
 
-[testenv:ruff]
-description = ruff check
+[testenv:repo-review]
+description = repo-review
 skip_install = true
 allowlist_externals = poetry
-commands_pre = poetry install --only=lint --no-root --sync
-commands = poetry run ruff check
-
-[testenv:basedpyright]
-description = basedpyright
-skip_install = true
-allowlist_externals = poetry
-commands_pre = poetry install --only=typecheck --no-root --sync
-commands = poetry run basedpyright
+commands_pre = poetry install
+commands = poetry run repo-review .
 """
