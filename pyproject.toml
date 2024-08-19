@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "mainpy"
-version = "1.3.1"
+version = "1.3.2"
 description = "Simplify your project entrypoint with @main"
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
 license = "MIT"
@@ -42,19 +42,19 @@ markers = 'sys_platform != "win32"'
 python = "<3.13"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = {version = "^3.7.1", python = ">=3.9"}
-tox = "^4.16.0"
+pre-commit = {version = "^3.8.0", python = ">=3.9"}
+tox = "^4.18.0"
 
 [tool.poetry.group.lint.dependencies]
 sp-repo-review = {version = "^2024.4.23", extras = ["cli"], python = ">=3.10"}
 codespell = "^2.3.0"
-ruff = "^0.5.2"
+ruff = "^0.6.1"
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.2.2"
+pytest = "^8.3.2"
 
 [tool.poetry.group.typecheck.dependencies]
-basedpyright = "^1.13.3"
+basedpyright = "^1.16.0"
 typing_extensions = "*"
 pytest = "*"
 

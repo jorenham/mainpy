@@ -63,7 +63,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: install poetry
-        run: pipx install poetry
+        run: |
+          pipx install poetry
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+
 
       - name: setup python
         uses: actions/setup-python@v5
@@ -76,6 +80,9 @@ jobs:
 
       - name: basedpyright
         run: poetry run basedpyright
+
+      - name: basedpyright --verifytypes
+        run: poetry run basedpyright --ignoreexternal --verifytypes mainpy
 
   test:
     timeout-minutes: 5
