@@ -1,28 +1,82 @@
-# `@main`.py
+<h1 align="center"><code>@main</code>.py</h1>
 
------
+<p align="center">
+    <a href="https://pypi.org/project/mainpy/">
+        <img
+            alt="mainpy - PyPI"
+            src="https://img.shields.io/pypi/v/mainpy?style=flat"
+        />
+    </a>
+    <a href="https://github.com/jorenham/mainpy">
+        <img
+            alt="mainpy - Python Versions"
+            src="https://img.shields.io/pypi/pyversions/mainpy?style=flat"
+        />
+    </a>
+    <a href="https://github.com/jorenham/mainpy">
+        <img
+            alt="mainpy - license"
+            src="https://img.shields.io/github/license/jorenham/mainpy?style=flat"
+        />
+    </a>
+</p>
+<p align="center">
+    <a href="https://github.com/jorenham/mainpy/actions?query=workflow%3ACI">
+        <img
+            alt="mainpy - CI"
+            src="https://github.com/jorenham/mainpy/workflows/CI/badge.svg"
+        />
+    </a>
+    <a href="https://github.com/pre-commit/pre-commit">
+        <img
+            alt="mainpy - pre-commit"
+            src="https://img.shields.io/badge/pre--commit-enabled-orange?logo=pre-commit"
+        />
+    </a>
+    <!-- <a href="https://github.com/KotlinIsland/basedmypy">
+        <img
+            alt="mainpy - basedmypy"
+            src="https://img.shields.io/badge/basedmypy-checked-fd9002"
+        />
+    </a> -->
+    <a href="https://detachhead.github.io/basedpyright">
+        <img
+            alt="mainpy - basedpyright"
+            src="https://img.shields.io/badge/basedpyright-checked-42b983"
+        />
+    </a>
+    <a href="https://github.com/astral-sh/ruff">
+        <img
+            alt="mainpy - ruff"
+            src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json"
+        />
+    </a>
+</p>
 
-[![mainpy - pypi version](https://img.shields.io/pypi/v/mainpy.svg)][PYPI]
-[![mainpy - python versions](https://img.shields.io/pypi/pyversions/mainpy.svg)][PYPI]
-[![mainpy - license](https://img.shields.io/pypi/l/mainpy.svg)][PYPI]
-[![mainpy - workflow status](https://github.com/jorenham/mainpy/workflows/CI/badge.svg)][CI]
-[![mainpy - basedpyright](https://img.shields.io/badge/basedpyright-checked-42b983)][BASEDPYRIGHT]
-[![mainpy - ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)][RUFF]
-
------
+---
 
 ## Basic Examples
 
-Instead of the verbose "boilerplate"
+With `mainpy`, there's no need to write `if __name__ == '__main__'` the
+boilerplate anymore:
+
+<table>
+<tr>
+<th width="415px">without <code>mainpy</code></th>
+<th width="415px">with <code>mainpy</code></th>
+</tr>
+<tr>
+<td width="415px">
 
 ```python
-def main(): ...
-
 if __name__ == '__main__':
-    main()
+    app()
+
+def app(): ...
 ```
 
-mainpy can be used to write it as:
+</td>
+<td width="415px">
 
 ```python
 from mainpy import main
@@ -31,7 +85,19 @@ from mainpy import main
 def app(): ...
 ```
 
-Similarly, the async boilerplate
+</td>
+</tr>
+</table>
+
+For async apps, the improvement becomes even more obvious:
+
+<table>
+<tr>
+<th width="415px">without <code>mainpy</code></th>
+<th width="415px">with <code>mainpy</code></th>
+</tr>
+<tr>
+<td width="415px">
 
 ```python
 import asyncio
@@ -43,25 +109,19 @@ if __name__ == '__main__':
         runner.run(async_app())
 ```
 
-can be replaced with
+</td>
+<td width="415px">
 
 ```python
 from mainpy import main
 
-@mainpy.main
+@main
 async def async_app(): ...
 ```
 
-If you cannot want to use a decorator, you can also call the decorator
-with the function as an argument:
-
-```python
-def async_app(): ...
-
-# do things before running async_app()
-
-main(async_app)
-```
+</td>
+</tr>
+</table>
 
 ## External Libraries
 
@@ -164,9 +224,6 @@ pip install mainpy[uvloop]
 ```
 
 [PYPI]: https://pypi.org/project/mainpy/
-[CI]: https://github.com/jorenham/mainpy/actions
-[BASEDPYRIGHT]: https://detachhead.github.io/basedpyright/
-[RUFF]: https://github.com/astral-sh/ruff
 [UVLOOP]: https://github.com/MagicStack/uvloop
 [CLICK]: https://github.com/pallets/click
 [TYPER]: https://github.com/tiangolo/typer
