@@ -81,6 +81,9 @@ jobs:
       - name: basedpyright
         run: poetry run basedpyright
 
+      - name: basedpyright --verifytypes
+        run: poetry run basedpyright --ignoreexternal --verifytypes mainpy
+
   test:
     timeout-minutes: 5
 
