@@ -8,6 +8,7 @@ ci:
     - codespell
     - ruff
     - basedpyright
+    - basedpyright-verifytypes
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -70,3 +71,10 @@ repos:
         entry: poetry run basedpyright
         language: system
         types_or: [python, pyi]
+
+      - id: basedpyright-verifytypes
+        name: basedpyright --verifytypes
+        entry: poetry run basedpyright --ignoreexternal --verifytypes mainpy
+        language: system
+        always_run: true
+        pass_filenames: false
