@@ -179,6 +179,10 @@ ignore = [
     "PLC0415",  # pylint: import-outside-top-level
 ]
 [tool.ruff.lint.per-file-ignores]
+"examples/*" = [
+    "INP001",   # flake8-no-pep420: implicit-namespace-package
+    "T201",     # flake8-print: print
+]
 "tests/*" = [
     "S",        # flake8-bandit
     "ANN",      # flake8-annotations
