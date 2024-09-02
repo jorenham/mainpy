@@ -20,14 +20,15 @@ if TYPE_CHECKING:
     import contextvars
 
 if sys.version_info < (3, 11):
-    from typing_extensions import Never, TypeAlias
+    from typing_extensions import Never, Protocol, TypeAlias, TypeGuard
 else:
-    from typing import Never, TypeAlias
+    from typing import Never, Protocol, TypeAlias, TypeGuard
 
 __all__ = ('main',)
 
 _R = TypeVar('_R')
-_F = TypeVar('_F', bound=Callable[[], Any])
+_R_co = TypeVar('_R_co', covariant=True)
+_F = TypeVar('_F', bound=Callable[[], object])
 
 _SFunc: TypeAlias = Callable[[], _R]
 _AFunc: TypeAlias = Callable[[], Coroutine[Any, Any, _R]]
@@ -75,6 +76,32 @@ def _enable_debug() -> None:
         import faulthandler
 
         faulthandler.enable()
+
+
+class _HasCallbackFunction(Protocol[_R_co]):
+    __module__: str
+
+    @property
+    def callback(self, /) -> Callable[[], _R_co]: ...
+    def __call__(self, /) -> _R_co: ...
+
+
+def _is_click_cmd(func: _F) -> TypeGuard[_HasCallbackFunction[_F]]:
+    return func.__module__ == 'click.core' and hasattr(func, 'callback')
+
+
+@overload
+def _unwrap_click(func: _HasCallbackFunction[_R], /) -> Callable[[], _R]: ...
+@overload
+def _unwrap_click(func: _F, /) -> _F: ...
+def _unwrap_click(func: _HasCallbackFunction[object] | _F, /) -> _F | object:
+    if _is_click_cmd(func):
+        return func.callback
+    return func
+
+
+def _is_main_func(func: Callable[..., object]) -> bool:
+    return _unwrap_click(func).__module__ == '__main__'
 
 
 @final
@@ -128,6 +155,7 @@ def main(
     Decorate a function to be the main entrypoint.
     """
     if func is None:
+
         def _main(_func: _F, /) -> _F | object:
             return main(
                 _func,
@@ -143,7 +171,7 @@ def main(
         errmsg = f'expected a callable, got {type(func)}'
         raise TypeError(errmsg)
 
-    if func.__module__ != '__main__':
+    if not _is_main_func(func):
         import inspect
 
         frame = inspect.currentframe()
@@ -156,7 +184,7 @@ def main(
     if is_async is False or (
         is_async is None
         and not asyncio.iscoroutinefunction(func)
-    ):
+    ):  # fmt: skip
         return cast(_R, func())
 
     if use_uvloop is None:
