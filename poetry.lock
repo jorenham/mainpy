@@ -203,18 +203,18 @@ files = [
 
 [[package]]
 name = "nodejs-wheel-binaries"
-version = "20.16.0"
+version = "20.17.0"
 description = "unoffical Node.js package"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "nodejs_wheel_binaries-20.16.0-py2.py3-none-macosx_10_15_x86_64.whl", hash = "sha256:5f36c3e2ad9d76505e685811ff838c69163a820bf424e96ed7cff40d845ee394"},
-    {file = "nodejs_wheel_binaries-20.16.0-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:8e23925f2fbe60a8439742de2a58e08b16a8e14235d066663b9f8d9c1d99026a"},
-    {file = "nodejs_wheel_binaries-20.16.0-py2.py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3810a1faca9ad48e1be479f921f38b47b6f6554a4f1f7f17190d0b0ba02d9789"},
-    {file = "nodejs_wheel_binaries-20.16.0-py2.py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e5efb3d07c30d61f91221710ce838aaf965d46d9f9eee751121abf020bc5da7c"},
-    {file = "nodejs_wheel_binaries-20.16.0-py2.py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:338f36039d76381ce66aa24e1b7092192897b97230b631bc11aeebad217383ec"},
-    {file = "nodejs_wheel_binaries-20.16.0-py2.py3-none-win_amd64.whl", hash = "sha256:70f7da760bded1b86581ee5d4cd0e57d77c67f8ee0d969cd906db2a6a02ecffb"},
-    {file = "nodejs_wheel_binaries-20.16.0.tar.gz", hash = "sha256:85649da01bb3d0d3c9237d28545180254cda5417b4e2c219f53face0103fb2bf"},
+    {file = "nodejs_wheel_binaries-20.17.0-py2.py3-none-macosx_10_15_x86_64.whl", hash = "sha256:a5eaffb0327d751360e5f01e92f0adeb3b297a9196751bf1dda910b92c9f6f83"},
+    {file = "nodejs_wheel_binaries-20.17.0-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:a661d2894b11dc886ae8c25727c3cdf1d54db982cdccfcddbb2dfe20dd249f3b"},
+    {file = "nodejs_wheel_binaries-20.17.0-py2.py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e0144c91e9816cda969d78ba0903acc405c99e0a4bfffbdabac6b48b237335e7"},
+    {file = "nodejs_wheel_binaries-20.17.0-py2.py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b87ee7e88bfece2d325949e4f0dedb942b7478c401fc4e6726c5270f5835a02d"},
+    {file = "nodejs_wheel_binaries-20.17.0-py2.py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:5b5fb7c51204ad30e9f83ab503f11b17de4bcc1c248314f83ca3302fda24b1a1"},
+    {file = "nodejs_wheel_binaries-20.17.0-py2.py3-none-win_amd64.whl", hash = "sha256:931558d528b976eb67ae1f68253df089e9d7d7267b6980fc580bfd31d67a0f5c"},
+    {file = "nodejs_wheel_binaries-20.17.0.tar.gz", hash = "sha256:827a3297a99764adfaeb0cd1e9e36d8fb79c5b074de916a2a31b8a61b8d208f7"},
 ]
 
 [[package]]
@@ -410,13 +410,13 @@ files = [
 
 [[package]]
 name = "repo-review"
-version = "0.11.0"
+version = "0.11.2"
 description = "Framework that can run checks on repos"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "repo_review-0.11.0-py3-none-any.whl", hash = "sha256:69f4764af21f69388ee9a3acf52cae9eb82c73d5a874e9613c4194118ab258ec"},
-    {file = "repo_review-0.11.0.tar.gz", hash = "sha256:d2942685da1aa9ee946a3ba47532eeb5b9f5bdfba7193944c5844b9fc6a4ffe7"},
+    {file = "repo_review-0.11.2-py3-none-any.whl", hash = "sha256:8ea09f390db19acb1fed0aaa7a289eba1a9afb8e39d1af5f02720b4eeb9968c0"},
+    {file = "repo_review-0.11.2.tar.gz", hash = "sha256:6e6eed2b8a6773a8f9684ab0f043d47b12383b9e1c546630fc406ecb63aa39bd"},
 ]
 
 [package.dependencies]
@@ -430,19 +430,19 @@ typing-extensions = {version = "*", markers = "python_version < \"3.11\""}
 
 [package.extras]
 cli = ["click (>=8)", "rich (>=12.2)", "rich-click"]
-dev = ["click (>=8)", "pytest (>=7)", "rich (>=12.2)", "rich-click", "sp-repo-review (>=2023.12.21)", "validate-pyproject (>=0.14)"]
+dev = ["click (>=8)", "pytest (>=7)", "rich (>=12.2)", "rich-click", "sp-repo-review (>=2024.08.19)", "validate-pyproject (>=0.14)"]
 docs = ["click (>=8)", "furo", "myst-parser (>=0.13)", "rich (>=12.2)", "rich-click", "sphinx (>=4.0)", "sphinx-autodoc-typehints", "sphinx-copybutton", "sphinx-github-changelog", "sphinxcontrib-programoutput", "sphinxext-opengraph"]
-test = ["pytest (>=7)", "sp-repo-review (>=2023.12.21)", "validate-pyproject (>=0.14)"]
+test = ["pytest (>=7)", "sp-repo-review (>=2024.08.19)", "validate-pyproject (>=0.14)"]
 
 [[package]]
 name = "rich"
-version = "13.7.1"
+version = "13.8.0"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "rich-13.7.1-py3-none-any.whl", hash = "sha256:4edbae314f59eb482f54e9e30bf00d33350aaa94f4bfcd4e9e3110e64d0d7222"},
-    {file = "rich-13.7.1.tar.gz", hash = "sha256:9be308cb1fe2f1f57d67ce99e95af38a1e2bc71ad9813b0e247cf7ffbcc3a432"},
+    {file = "rich-13.8.0-py3-none-any.whl", hash = "sha256:2e85306a063b9492dffc86278197a60cbece75bcb766022f3436f567cae11bdc"},
+    {file = "rich-13.8.0.tar.gz", hash = "sha256:a5ac1f1cd448ade0d59cc3356f7db7a7ccda2c8cbae9c7a90c28ff463d3e91f4"},
 ]
 
 [package.dependencies]
