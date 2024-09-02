@@ -1,5 +1,5 @@
 ci:
-  autoupdate_branch: "dev"
+  autoupdate_branch: "main"
   autoupdate_commit_msg: "update pre-commit hooks"
   skip:
     - markdownlint
@@ -37,7 +37,7 @@ repos:
       - id: name-tests-test
         args: [--pytest-test-first]
       - id: no-commit-to-branch
-        args: [--branch, main, --branch, dev]
+        args: [--branch, main]
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
 
