@@ -79,7 +79,7 @@ def test_async(monkeypatch: pytest.MonkeyPatch):
     )
 
 
-def test_async_implicit(no_uvloop: None, monkeypatch: pytest.MonkeyPatch):
+def test_async_implicit(no_uvloop: None, monkeypatch: pytest.MonkeyPatch):  # pyright: ignore[reportUnusedParameter]
     @mp.main
     @_patch_module(monkeypatch, '__main__')
     async def app():
