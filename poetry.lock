@@ -501,13 +501,13 @@ files = [
 
 [[package]]
 name = "sp-repo-review"
-version = "2024.4.23"
+version = "2024.8.19"
 description = "Review repos for compliance to the Scientific-Python development guidelines"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "sp_repo_review-2024.4.23-py3-none-any.whl", hash = "sha256:c13ed7e9136c50dd97256cf5fa3aae7aac44154789f2795d1b1486c5659a876b"},
-    {file = "sp_repo_review-2024.4.23.tar.gz", hash = "sha256:88cf57dcf7994024a9705e887c6744e923de5f0695711e29739fe7ae882fa2b8"},
+    {file = "sp_repo_review-2024.8.19-py3-none-any.whl", hash = "sha256:a8373d94b5dc5e7b5eeeb330b02c44b3f1965bd8dd5090169bc42e1eaf6617e8"},
+    {file = "sp_repo_review-2024.8.19.tar.gz", hash = "sha256:f457cd74571f1d7d0ced78ff739db49b9f524712c73f219d9b0f4f6a130494c9"},
 ]
 
 [package.dependencies]
@@ -643,4 +643,4 @@ uvloop = ["uvloop"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "39f0e0ee34561e5da55b8f5fd4e95e615328d272aae22b518a998ec4216539df"
+content-hash = "2180f6c67d5757a7a35de3d176eb88d2e0b0d9cc02a638181aec7103144b1c9f"
