@@ -54,7 +54,7 @@ ruff = "^0.6.3"
 pytest = "^8.3.2"
 
 [tool.poetry.group.typecheck.dependencies]
-basedpyright = "^1.16.0"
+basedpyright = "^1.17.1"
 typing_extensions = "*"
 pytest = "*"
 
