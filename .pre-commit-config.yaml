@@ -46,11 +46,6 @@ repos:
     hooks:
       - id: markdownlint
 
-  - repo: https://github.com/python-poetry/poetry
-    rev: 1.8.3
-    hooks:
-      - id: poetry-check
-
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
     hooks:
@@ -68,13 +63,13 @@ repos:
     hooks:
       - id: basedpyright
         name: basedpyright
-        entry: poetry run basedpyright
+        entry: uv run basedpyright
         language: system
         types_or: [python, pyi]
 
       - id: basedpyright-verifytypes
         name: basedpyright --verifytypes
-        entry: poetry run basedpyright --ignoreexternal --verifytypes mainpy
+        entry: uv run basedpyright --ignoreexternal --verifytypes mainpy
         language: system
         always_run: true
         pass_filenames: false

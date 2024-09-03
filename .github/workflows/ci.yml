@@ -20,23 +20,23 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: install poetry
-        run: pipx install poetry
+      - name: setup uv
+        uses: eifinger/setup-uv@v1
+        with:
+          version: '0.4.3'
+          enable-cache: true
 
       - name: setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.8
-          cache: poetry
+        run: uv python install 3.8
 
-      - name: install
-        run: poetry install
+      - name: install dependencies
+        run: uv sync --frozen --all-extras --dev
 
       - name: codespell
-        run: poetry run codespell .
+        run: uv run codespell .
 
       - name: ruff check
-        run: poetry run ruff check --output-format=github
+        run: uv run ruff check --output-format=github
 
       - name: markdownlint
         uses: DavidAnson/markdownlint-cli2-action@v16
@@ -61,27 +61,23 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: install poetry
-        run: |
-          pipx install poetry
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
-
+      - name: setup uv
+        uses: eifinger/setup-uv@v1
+        with:
+          version: '0.4.3'
+          enable-cache: true
 
       - name: setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: poetry
+        run: uv python install 3.8
 
       - name: install
-        run: poetry install
+        run: uv sync --frozen --all-extras --dev
 
       - name: basedpyright
-        run: poetry run basedpyright
+        run: uv run basedpyright
 
       - name: basedpyright --verifytypes
-        run: poetry run basedpyright --ignoreexternal --verifytypes mainpy
+        run: uv run basedpyright --ignoreexternal --verifytypes mainpy
 
   test:
     timeout-minutes: 5
@@ -97,17 +93,17 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: install poetry
-        run: pipx install poetry
+      - name: setup uv
+        uses: eifinger/setup-uv@v1
+        with:
+          version: '0.4.3'
+          enable-cache: true
 
       - name: setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: poetry
+        run: uv python install 3.8
 
       - name: install
-        run: poetry install --extras uvloop --with test-github --sync
+        run: uv sync --frozen --all-extras --dev
 
       - name: pytest
-        run: poetry run pytest
+        run: uv run pytest

@@ -1,72 +1,67 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 
-[tool.poetry]
+[project]
 name = "mainpy"
-version = "1.4.0"
 description = "Simplify your project entrypoint with @main"
-authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
-license = "MIT"
+version = "1.4.0"
+authors = [
+  {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
+]
+license = {text = "MIT"}
 readme = "README.md"
-repository = "https://github.com/jorenham/mainpy"
-documentation = "https://github.com/jorenham/mainpy?tab=readme-ov-file#mainpy"
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Operating System :: OS Independent",
-    "Typing :: Typed",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
+  "Development Status :: 5 - Production/Stable",
+  "Operating System :: OS Independent",
+  "Typing :: Typed",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.8"
+dependencies = [
+  "typing-extensions>=4.12.2; python_version < '3.11'",
 ]
 
-[tool.poetry.urls]
-"Bug Tracker" = "https://github.com/jorenham/mainpy/issues"
-"Changelog" = "https://github.com/jorenham/mainpy/releases"
+[project.urls]
+Repository = "https://github.com/jorenham/mainpy"
+Documentation = "https://github.com/jorenham/mainpy?tab=readme-ov-file#mainpy"
+Issues = "https://github.com/jorenham/mainpy/issues"
+Changelog = "https://github.com/jorenham/mainpy/releases"
+Funding = "https://github.com/sponsors/jorenham"
 
-[tool.poetry.extras]
-uvloop = ["uvloop"]
+[project.optional-dependencies]
+uvloop = [
+  # TODO: allow py313 once uvloop 0.21 is released,
+  "uvloop>=0.15.2,<1; sys_platform != 'win32' and python_version < '3.13'",
+]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-typing_extensions = {version = "^4.1", python = "<3.11"}
 
-[tool.poetry.dependencies.uvloop]
-version = ">=0.15.2,<1.0"
-optional = true
-markers = 'sys_platform != "win32"'
-python = "<3.13"
+[tool.uv]
+dev-dependencies = [
+  "typing-extensions>=4.12.2,<5",
+  "uvloop>=0.20,<1",
 
-[tool.poetry.group.dev.dependencies]
-pre-commit = {version = "^3.8.0", python = ">=3.9"}
-tox = "^4.18.0"
+  "basedpyright>=1.17.1,<2",
+  "codespell>=2.3.0,<3",
+  "pytest>=8.3.2,<9",
+  "ruff>=0.6.3,<0.7",
 
-[tool.poetry.group.lint.dependencies]
-sp-repo-review = {version = "^2024.8.19", extras = ["cli"], python = ">=3.10"}
-codespell = "^2.3.0"
-ruff = "^0.6.3"
-
-[tool.poetry.group.test.dependencies]
-pytest = "^8.3.2"
-
-[tool.poetry.group.typecheck.dependencies]
-basedpyright = "^1.17.1"
-typing_extensions = "*"
-pytest = "*"
-
-[tool.poetry.group.test-github]
-optional = true
-[tool.poetry.group.test-github.dependencies]
-pytest-github-actions-annotate-failures = ">=0.2.0,<1"
+  # "pre-commit>=3.8.0,<4; python_version >= '3.9'",
+  "pre-commit>=3.5.0",
+  "tox>=4.18.0",
+  "sp-repo-review[cli]>=2024.8.19; python_version >= '3.10'",
+]
 
 
 [tool.codespell]
 context = 2
-skip = "poetry.lock"
+skip = "uv.lock"
 
 
 [tool.pytest.ini_options]
@@ -79,18 +74,18 @@ xfail_strict = true
 
 
 [tool.basedpyright]
-include = ["mainpy", "tests"]
 ignore = ["**/.venv"]
-stubPath = "."
-venvPath = "."
-venv = ".venv"
-pythonVersion = "3.8"
+include = ["mainpy", "tests"]
 pythonPlatform = "All"
+pythonVersion = "3.8"
+stubPath = "."
 typeCheckingMode = "all"
+venv = ".venv"
+venvPath = "."
 
 reportAny = false
-reportUnusedCallResult = false
 reportInvalidCast = false
+reportUnusedCallResult = false
 # this appears to be broken since pyright 1.1.359
 reportUntypedFunctionDecorator = false
 # because of `sys.version_info()` conditionals
@@ -99,95 +94,95 @@ reportUnreachable = false
 
 [tool.repo-review]
 ignore = [
-    "PY004",    # README.md >> docs/
-    "PC110",    # optype's style >> (black | ruff-format)
-    "PC140",    # (based)pyright >> mypy (by several orders of magnitude)
-    "PC170",    # no .rst
-    "PC180",    # no .css or .js
-    "MY",       # (based)pyright >> mypy (by several orders of magnitude)
-    "RTD",      # README.md >> rtd
+  "PY004", # README.md >> docs/
+  "PC110", # optype's style >> (black | ruff-format)
+  "PC140", # (based)pyright >> mypy (by several orders of magnitude)
+  "PC170", # no .rst
+  "PC180", # no .css or .js
+  "MY", # (based)pyright >> mypy (by several orders of magnitude)
+  "RTD", # README.md >> rtd
 ]
 
 
 [tool.ruff]
+extend-exclude = [".github", ".tox", ".vscode", "dist"]
+force-exclude = true
+indent-width = 4
+line-length = 79
+show-fixes = true
 src = ["mainpy", "tests"]
 target-version = "py38"
-line-length = 79
-indent-width = 4
-show-fixes = true
-force-exclude = true
-extend-exclude = [".github", ".tox", ".vscode", "dist"]
 
 [tool.ruff.lint]
+ignore = [
+  "ANN401", # flake8-annotations: any-type
+  "PLC0415", # pylint: import-outside-top-level
+]
 preview = true
 select = [
-    "F",        # pyflakes
-    "E",        # pycodestyle error
-    "W",        # pycodestyle warning
-    "I",        # isort
-    "N",        # pep8-naming
-    "UP",       # pyupgrade
-    "YTT",      # flake8-2020
-    "ANN",      # flake8-annotations
-    "ASYNC",    # flake8-async
-    "ASYNC1",     # flake8-trio
-    "S",        # flake8-bandit
-    "BLE",      # flake8-blind-except
-    "B",        # flake8-bugbear
-    "A",        # flake8-builtins
-    "COM",      # flake8-commas
-    "C4",       # flake8-comprehensions
-    "DTZ",      # flake8-datetimez
-    "T10",      # flake8-debugger
-    "EXE",      # flake8-executable
-    "FA",       # flake8-future-annotations
-    "ISC",      # flake8-implicit-str-concat
-    "ICN",      # flake8-import-conventions
-    "G",        # flake8-logging-format
-    "INP",      # flake8-no-pep420
-    "PIE",      # flake8-pie
-    "T20",      # flake8-print
-    "PYI",      # flake8-pyi
-    "PT",       # flake8-pytest-style
-    "Q",        # flake8-quotes
-    "RSE",      # flake8-raise
-    "RET",      # flake8-return
-    "SLF",      # flake8-self
-    "SLOT",     # flake8-slots
-    "SIM",      # flake8-simplify
-    "TID",      # flake8-tidy-imports
-    "TCH",      # flake8-type-checking
-    "ARG",      # flake8-unused-arguments
-    "PTH",      # flake8-use-pathlib
-    "TD",       # flake8-todos
-    "FIX",      # flake8-fixme
-    "ERA",      # eradicate
-    "PD",       # pandas-vet
-    "PGH",      # pygrep-hooks
-    "PL",       # pylint
-    "TRY",      # tryceratops
-    "FLY",      # flynt
-    "NPY",      # numpy
-    "AIR",      # airflow
-    "PERF",     # perflint,
-    "FURB",     # refurb
-    "LOG",      # flake8-logging
-    "RUF",      # ruff
-]
-ignore = [
-    "ANN401",   # flake8-annotations: any-type
-    "PLC0415",  # pylint: import-outside-top-level
+  "F", # pyflakes
+  "E", # pycodestyle error
+  "W", # pycodestyle warning
+  "I", # isort
+  "N", # pep8-naming
+  "UP", # pyupgrade
+  "YTT", # flake8-2020
+  "ANN", # flake8-annotations
+  "ASYNC", # flake8-async
+  "ASYNC1", # flake8-trio
+  "S", # flake8-bandit
+  "BLE", # flake8-blind-except
+  "B", # flake8-bugbear
+  "A", # flake8-builtins
+  "COM", # flake8-commas
+  "C4", # flake8-comprehensions
+  "DTZ", # flake8-datetimez
+  "T10", # flake8-debugger
+  "EXE", # flake8-executable
+  "FA", # flake8-future-annotations
+  "ISC", # flake8-implicit-str-concat
+  "ICN", # flake8-import-conventions
+  "G", # flake8-logging-format
+  "INP", # flake8-no-pep420
+  "PIE", # flake8-pie
+  "T20", # flake8-print
+  "PYI", # flake8-pyi
+  "PT", # flake8-pytest-style
+  "Q", # flake8-quotes
+  "RSE", # flake8-raise
+  "RET", # flake8-return
+  "SLF", # flake8-self
+  "SLOT", # flake8-slots
+  "SIM", # flake8-simplify
+  "TID", # flake8-tidy-imports
+  "TCH", # flake8-type-checking
+  "ARG", # flake8-unused-arguments
+  "PTH", # flake8-use-pathlib
+  "TD", # flake8-todos
+  "FIX", # flake8-fixme
+  "ERA", # eradicate
+  "PD", # pandas-vet
+  "PGH", # pygrep-hooks
+  "PL", # pylint
+  "TRY", # tryceratops
+  "FLY", # flynt
+  "NPY", # numpy
+  "AIR", # airflow
+  "PERF", # perflint,
+  "FURB", # refurb
+  "LOG", # flake8-logging
+  "RUF", # ruff
 ]
 [tool.ruff.lint.per-file-ignores]
 "examples/*" = [
-    "INP001",   # flake8-no-pep420: implicit-namespace-package
-    "T201",     # flake8-print: print
+  "INP001", # flake8-no-pep420: implicit-namespace-package
+  "T201", # flake8-print: print
 ]
 "tests/*" = [
-    "S",        # flake8-bandit
-    "ANN",      # flake8-annotations
-    "ARG001",   # flake8-unused-arguments: unused-function-argument
-    "SLF001",   # flake8-self: private-member-access
+  "S", # flake8-bandit
+  "ANN", # flake8-annotations
+  "ARG001", # flake8-unused-arguments: unused-function-argument
+  "SLF001", # flake8-self: private-member-access
 ]
 
 [tool.ruff.lint.pycodestyle]
@@ -230,21 +225,21 @@ envlist =
 [testenv]
 description = pytest
 skip_install = true
-allowlist_externals = poetry
-commands_pre = poetry install --extras=uvloop
-commands = poetry run pytest
+allowlist_externals = uv
+commands_pre = uv sync --frozen --extra uvloop
+commands = uvx pytest
 
 [testenv:pre-commit]
 description = pre-commit
 skip_install = true
-allowlist_externals = poetry
-commands_pre = poetry install
-commands = poetry run pre-commit run --all-files
+allowlist_externals = uv
+commands_pre = uv sync --frozen
+commands = uvx pre-commit run --all-files
 
 [testenv:repo-review]
 description = repo-review
 skip_install = true
-allowlist_externals = poetry
-commands_pre = poetry install
-commands = poetry run repo-review .
+allowlist_externals = uv
+commands_pre = uv sync --frozen
+commands = uvx repo-review .
 """
