@@ -192,9 +192,9 @@ def main(
 
     if sys.version_info < (3, 11):
         if use_uvloop:
-            import uvloop  # pyright: ignore[reportMissingImports]
+            import uvloop
 
-            uvloop.install()  # pyright: ignore[reportUnknownMemberType]
+            uvloop.install()
 
         return asyncio.run(cast(Coroutine[Any, Any, _R], func()), debug=debug)
 
