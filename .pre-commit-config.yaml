@@ -68,13 +68,13 @@ repos:
     hooks:
       - id: basedpyright
         name: basedpyright
-        entry: poetry run basedpyright
+        entry: .\pw typecheck
         language: system
         types_or: [python, pyi]
 
       - id: basedpyright-verifytypes
         name: basedpyright --verifytypes
-        entry: poetry run basedpyright --ignoreexternal --verifytypes mainpy
+        entry: .\pw typecheck --ignoreexternal --verifytypes mainpy
         language: system
         always_run: true
         pass_filenames: false

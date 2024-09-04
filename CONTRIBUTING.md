@@ -176,19 +176,19 @@ which could serve as inspiration.
 
 ### Your First Code Contribution
 
-Ensure you have [poetry](https://python-poetry.org/docs/#installation)
-installed.
+You don't need to install poetry, it is managed by pyprojectx.
+
 It can help to use mainpy's lowest-supported Python version, so that you don't
 accidentally use those bleeding-edge Python features that you shouldn't, e.g.
 
 ```bash
-poetry env use python3.11
+./pw poetry env use python3.11
 ```
 
 Now you can install the dev dependencies using
 
 ```bash
-poetry install --sync
+./pw install --sync
 ```
 
 ### pre-commit
@@ -199,24 +199,22 @@ formatted and typed correctly when committing the changes.
 You can install it with
 
 ```bash
-poetry run pre-commit install
+./pw run pre-commit install
 ```
 
 It can also be manually run:
 
 ```bash
-poetry run pre-commit run --all-files
+./pw run pre-commit run --all-files
 ```
 
 This is roughly the same as manually running
 
 ```bash
-poetry install --sync
-poetry check
-poetry run codespell
-poetry run ruff --fix
-poetry run basedpyright
-poetry run repo-review pyproject.toml
+./pw codespell
+./pw lint --fix
+./pw typecheck
+./pw repo-review
 ```
 
 > [!NOTE]
@@ -229,7 +227,7 @@ Mainpy uses [pytest](https://docs.pytest.org/en/stable/) for unit testing.
 These tests can be run with
 
 ```bash
-poetry run pytest
+./pw test
 ```
 
 ### Improving The Documentation

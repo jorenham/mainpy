@@ -20,23 +20,19 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: install poetry
-        run: pipx install poetry
-
       - name: setup python
         uses: actions/setup-python@v5
         with:
           python-version: 3.8
-          cache: poetry
-
-      - name: install
-        run: poetry install
 
       - name: codespell
-        run: poetry run codespell .
+        run: ./pw codespell
 
       - name: ruff check
-        run: poetry run ruff check --output-format=github
+        run: ./pw lint --output-format=github
+
+      - name: ruff format
+        run: ./pw format
 
       - name: markdownlint
         uses: DavidAnson/markdownlint-cli2-action@v16
@@ -63,9 +59,9 @@ jobs:
 
       - name: install poetry
         run: |
-          pipx install poetry
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
+          ./pw --install-context main
+          ./pw poetry config virtualenvs.create true --local
+          ./pw poetry config virtualenvs.in-project true --local
 
 
       - name: setup python
@@ -75,13 +71,13 @@ jobs:
           cache: poetry
 
       - name: install
-        run: poetry install
+        run: ./pw install
 
       - name: basedpyright
-        run: poetry run basedpyright
+        run: ./pw typecheck
 
       - name: basedpyright --verifytypes
-        run: poetry run basedpyright --ignoreexternal --verifytypes mainpy
+        run: ./pw typecheck --ignoreexternal --verifytypes mainpy
 
   test:
     timeout-minutes: 5
@@ -98,7 +94,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: install poetry
-        run: pipx install poetry
+        run: ./pw --install-context main
 
       - name: setup python
         uses: actions/setup-python@v5
@@ -107,7 +103,7 @@ jobs:
           cache: poetry
 
       - name: install
-        run: poetry install --extras uvloop --with test-github --sync
+        run: ./pw install --extras uvloop --with test-github --sync
 
       - name: pytest
-        run: poetry run pytest
+        run: ./pw test

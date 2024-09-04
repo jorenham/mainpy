@@ -45,11 +45,6 @@ python = "<3.13"
 pre-commit = {version = "^3.8.0", python = ">=3.9"}
 tox = "^4.18.0"
 
-[tool.poetry.group.lint.dependencies]
-sp-repo-review = {version = "^2024.8.19", extras = ["cli"], python = ">=3.10"}
-codespell = "^2.3.0"
-ruff = "^0.6.3"
-
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.2"
 
@@ -64,9 +59,29 @@ optional = true
 pytest-github-actions-annotate-failures = ">=0.2.0,<1"
 
 
+[tool.pyprojectx]
+main = [
+    "poetry",
+    "codespell>=2.3.0",
+    "sp-repo-review[cli]>=2024.8.19; python_version>='3.10'",
+    "ruff>=0.6.3"
+]
+
+[tool.pyprojectx.aliases]
+run = "poetry run"
+install = "poetry install"
+lock = "poetry lock --no-update"
+format = "ruff format"
+lint = "ruff check"
+typecheck = "@run basedpyright"
+test = "@run pytest"
+repo-review = "repo-review ."
+check = ["@lint --fix", "@format", "@typecheck"]
+
+
 [tool.codespell]
 context = 2
-skip = "poetry.lock"
+skip = ["poetry.lock", "pw.lock"]
 
 
 [tool.pytest.ini_options]
@@ -231,20 +246,18 @@ envlist =
 description = pytest
 skip_install = true
 allowlist_externals = poetry
-commands_pre = poetry install --extras=uvloop
-commands = poetry run pytest
+commands_pre = ./pw install --extras=uvloop
+commands = ./pw test
 
 [testenv:pre-commit]
 description = pre-commit
 skip_install = true
-allowlist_externals = poetry
-commands_pre = poetry install
-commands = poetry run pre-commit run --all-files
+commands_pre = ./pw install
+commands = ./pw run pre-commit run --all-files
 
 [testenv:repo-review]
 description = repo-review
 skip_install = true
-allowlist_externals = poetry
-commands_pre = poetry install
-commands = poetry run repo-review .
+commands_pre = ./pw install
+commands = ./pw repo-review
 """
