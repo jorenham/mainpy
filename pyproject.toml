@@ -45,7 +45,7 @@ uvloop = [
 [tool.uv]
 dev-dependencies = [
   "typing-extensions>=4.12.2,<5",
-  "uvloop>=0.20,<1",
+  "uvloop>=0.20,<1; sys_platform != 'win32'",
 
   "basedpyright>=1.17.1,<2",
   "codespell>=2.3.0,<3",

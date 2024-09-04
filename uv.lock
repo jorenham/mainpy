@@ -142,7 +142,7 @@ dev = [
     { name = "sp-repo-review", extra = ["cli"], marker = "python_full_version >= '3.10'" },
     { name = "tox" },
     { name = "typing-extensions" },
-    { name = "uvloop" },
+    { name = "uvloop", marker = "sys_platform != 'win32'" },
 ]
 
 [package.metadata]
@@ -161,7 +161,7 @@ dev = [
     { name = "sp-repo-review", extras = ["cli"], marker = "python_full_version >= '3.10'", specifier = ">=2024.8.19" },
     { name = "tox", specifier = ">=4.18.0" },
     { name = "typing-extensions", specifier = ">=4.12.2,<5" },
-    { name = "uvloop", specifier = ">=0.20,<1" },
+    { name = "uvloop", marker = "sys_platform != 'win32'", specifier = ">=0.20,<1" },
 ]
 
 [[package]]
