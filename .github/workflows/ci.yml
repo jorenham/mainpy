@@ -61,9 +61,6 @@ jobs:
       - name: basedpyright --verifytypes
         run: uv run basedpyright --ignoreexternal --verifytypes mainpy
 
-      - name: uv python list (TODO)
-        run: uv python list --only-installed
-
   test:
     timeout-minutes: 5
 
