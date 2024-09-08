@@ -67,7 +67,9 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.8", "3.12", "3.13"]
+        # TODO: https://github.com/astral-sh/uv/issues/6697
+        # python-version: ["3.8", "3.12", "3.13"]
+        python-version: ["3.8", "3.12",]
 
     runs-on: ${{ matrix.os }}
 
