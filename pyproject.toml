@@ -25,7 +25,7 @@ classifiers = [
 ]
 requires-python = ">=3.8"
 dependencies = [
-  "typing-extensions>=4.12.2; python_version < '3.11'",
+  "typing-extensions>=4.1; python_version < '3.11'",
 ]
 
 [project.urls]
@@ -44,8 +44,8 @@ uvloop = [
 
 [tool.uv]
 dev-dependencies = [
-  "typing-extensions>=4.12.2,<5",
-  "uvloop>=0.20,<1; sys_platform != 'win32'",
+  "typing-extensions",
+  "uvloop; sys_platform != 'win32'",
 
   "basedpyright>=1.17.1,<2",
   "codespell>=2.3.0,<3",

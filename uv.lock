@@ -147,7 +147,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "typing-extensions", marker = "python_full_version < '3.11'", specifier = ">=4.12.2" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'", specifier = ">=4.1" },
     { name = "uvloop", marker = "python_full_version < '3.13' and sys_platform != 'win32' and extra == 'uvloop'", specifier = ">=0.15.2,<1" },
 ]
 
@@ -160,8 +160,8 @@ dev = [
     { name = "ruff", specifier = ">=0.6.3,<0.7" },
     { name = "sp-repo-review", extras = ["cli"], marker = "python_full_version >= '3.10'", specifier = ">=2024.8.19" },
     { name = "tox", specifier = ">=4.18.0" },
-    { name = "typing-extensions", specifier = ">=4.12.2,<5" },
-    { name = "uvloop", marker = "sys_platform != 'win32'", specifier = ">=0.20,<1" },
+    { name = "typing-extensions" },
+    { name = "uvloop", marker = "sys_platform != 'win32'" },
 ]
 
 [[package]]
@@ -357,8 +357,8 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markdown-it-py", marker = "python_full_version >= '3.10'" },
     { name = "pyyaml", marker = "python_full_version >= '3.10'" },
-    { name = "tomli", marker = "python_full_version < '3.11'" },
-    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "tomli", marker = "python_full_version == '3.10.*'" },
+    { name = "typing-extensions", marker = "python_full_version == '3.10.*'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/b1/05/7e2c62219946c22492d84797cafa2883ff1765da5b8017b618fc59098c05/repo_review-0.11.2.tar.gz", hash = "sha256:6e6eed2b8a6773a8f9684ab0f043d47b12383b9e1c546630fc406ecb63aa39bd", size = 43860 }
 wheels = [
@@ -431,7 +431,7 @@ source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml", marker = "python_full_version >= '3.10'" },
     { name = "repo-review", marker = "python_full_version >= '3.10'" },
-    { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "tomli", marker = "python_full_version == '3.10.*'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/6a/32/23e447b877e499b68f302febb53ffdc4b0d2a06f4be6f39806f5b65bd7b3/sp_repo_review-2024.8.19.tar.gz", hash = "sha256:f457cd74571f1d7d0ced78ff739db49b9f524712c73f219d9b0f4f6a130494c9", size = 153078 }
 wheels = [
