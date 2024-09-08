@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 [project]
 name = "mainpy"
 description = "Simplify your project entrypoint with @main"
-version = "1.4.0"
+version = "1.4.1dev0"
 authors = [
   {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
 ]
@@ -14,6 +14,7 @@ license = {text = "MIT"}
 readme = "README.md"
 classifiers = [
   "Development Status :: 5 - Production/Stable",
+  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Typing :: Typed",
   "Programming Language :: Python :: 3.8",
