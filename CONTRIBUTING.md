@@ -179,16 +179,12 @@ which could serve as inspiration.
 Ensure you have [uv](https://github.com/astral-sh/uv) installed.
 It can help to use mainpy's lowest-supported Python version (3.10 for
 development), so that you don't accidentally use those bleeding-edge Python
-features that you shouldn't, e.g.
+features that you shouldn't.
+
+You can install the lowest supported Python version with
 
 ```bash
-uv python install 3.10
-```
-
-Now you can install the dev dependencies using
-
-```bash
-uv sync --dev
+uv sync --dev --python 3.10
 ```
 
 ### pre-commit
