@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  VERSION_UV: '0.4.7'
+  VERSION_UV: '0.4.10'
 
 jobs:
   lint:
@@ -24,10 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v2
-
-      - name: setup uv
-        uses: eifinger/setup-uv@v2.1.0
+        uses: astral-sh/setup-uv@v3
         with:
           version: ${{ env.VERSION_UV }}
           enable-cache: true
@@ -36,7 +33,7 @@ jobs:
         run: uv python install 3.8
 
       - name: uv sync
-        run: uv sync --frozen --dev
+        run: uv sync --frozen
 
       - name: codespell
         run: uv run codespell .
@@ -45,7 +42,7 @@ jobs:
         run: uv run ruff check --output-format=github
 
       - name: markdownlint
-        uses: DavidAnson/markdownlint-cli2-action@v16
+        uses: DavidAnson/markdownlint-cli2-action@v17
         with:
           config: ".markdownlint.yaml"
           globs: "*.md"
@@ -67,9 +64,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        # TODO: https://github.com/astral-sh/uv/issues/6697
-        # python-version: ["3.8", "3.12", "3.13"]
-        python-version: ["3.8", "3.12",]
+        python-version: ["3.8", "3.12", "3.13"]
 
     runs-on: ${{ matrix.os }}
 
@@ -78,7 +73,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: setup uv
-        uses: astral-sh/setup-uv@v2
+        uses: astral-sh/setup-uv@v3
         with:
           version: ${{ env.VERSION_UV }}
           enable-cache: true
@@ -87,7 +82,7 @@ jobs:
         run: uv python install ${{ matrix.python-version }}
 
       - name: uv sync
-        run: uv sync --frozen --dev
+        run: uv sync --frozen
 
       - name: pytest
         run: uv run pytest
