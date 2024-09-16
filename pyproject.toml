@@ -43,6 +43,32 @@ uvloop = [
 ]
 
 
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.cache",
+    "/.github",
+    "/.mypy_cache",
+    "/.pytest_cache",
+    "/.ruff_cache",
+    "/.tox",
+    "/.venv",
+    "/.vscode",
+    "/dist",
+    "/examples",
+    "/tests",
+    ".editorconfig",
+    ".gitignore",
+    ".mardownlint.yaml",
+    ".pre-commit-config.yaml",
+    ".python-version",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "README.md",
+    "SECURITY.md",
+    "uv.lock",
+]
+
+
 [tool.uv]
 dev-dependencies = [
   "typing-extensions",
