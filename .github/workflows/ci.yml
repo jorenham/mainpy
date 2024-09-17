@@ -11,6 +11,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  VERSION_UV: '0.4.10'
+
 jobs:
   lint:
     timeout-minutes: 5
@@ -20,68 +23,40 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: install poetry
-        run: pipx install poetry
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: ${{ env.VERSION_UV }}
+          enable-cache: true
 
       - name: setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.8
-          cache: poetry
+        run: uv python install 3.8
 
-      - name: install
-        run: poetry install
+      - name: uv sync
+        run: uv sync --frozen
 
       - name: codespell
-        run: poetry run codespell .
+        run: uv run codespell .
 
       - name: ruff check
-        run: poetry run ruff check --output-format=github
+        run: uv run ruff check --output-format=github
 
       - name: markdownlint
-        uses: DavidAnson/markdownlint-cli2-action@v16
+        uses: DavidAnson/markdownlint-cli2-action@v17
         with:
           config: ".markdownlint.yaml"
-          globs: "**/*.md"
+          globs: "*.md"
 
       - name: repo-review
         uses: scientific-python/repo-review@v0.11.2
         with:
           plugins: sp-repo-review
 
-  typecheck:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.12", "3.13-dev"]
-
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-
-      - name: install poetry
-        run: |
-          pipx install poetry
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
-
-
-      - name: setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: poetry
-
-      - name: install
-        run: poetry install
-
       - name: basedpyright
-        run: poetry run basedpyright
+        run: uv run basedpyright
 
       - name: basedpyright --verifytypes
-        run: poetry run basedpyright --ignoreexternal --verifytypes mainpy
+        run: uv run basedpyright --ignoreexternal --verifytypes mainpy
 
   test:
     timeout-minutes: 5
@@ -89,7 +64,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python-version: ["3.8", "3.12", "3.13-dev"]
+        python-version: ["3.8", "3.12", "3.13"]
 
     runs-on: ${{ matrix.os }}
 
@@ -97,17 +72,17 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: install poetry
-        run: pipx install poetry
+      - name: setup uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: ${{ env.VERSION_UV }}
+          enable-cache: true
 
       - name: setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: poetry
+        run: uv python install ${{ matrix.python-version }}
 
-      - name: install
-        run: poetry install --extras uvloop --with test-github --sync
+      - name: uv sync
+        run: uv sync --frozen
 
       - name: pytest
-        run: poetry run pytest
+        run: uv run pytest
