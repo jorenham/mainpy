@@ -3,11 +3,11 @@ from __future__ import annotations
 import asyncio
 import os
 import sys
+from collections.abc import Coroutine
 from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
-    Coroutine,
     Protocol,
     TypeVar,
     cast,
