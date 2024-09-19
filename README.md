@@ -210,14 +210,14 @@ def app(): ...
 
 ## Installation
 
-The `mainpy` package is available on [pypi][PYPI] for Python $\ge 3.8$:
+The `mainpy` package is available on [pypi][PYPI] for Python $\ge 3.9$:
 
 ```shell
 pip install mainpy
 ```
 
 Additionally, you can install the [`uvloop`][UVLOOP] extra which will install
-`uvloop>=0.14` (unless you're on windows):
+`uvloop>=0.15.2` (unless you're on windows):
 
 ```shell
 pip install mainpy[uvloop]
