@@ -64,6 +64,7 @@ exclude = [
 
 [tool.uv]
 dev-dependencies = [
+  "typing_extensions>=4.12.2",
   "uvloop; sys_platform != 'win32'",
 
   "basedpyright>=1.17.5,<2",
