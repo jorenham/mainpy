@@ -8,12 +8,14 @@ import pytest
 PY_SYNC = """
 import mainpy
 
+result = [None]
+
 @mainpy.main
 def sync_main():
     print({!r})
-    return 42
+    result[0] = 42
 
-assert sync_main == 42
+assert result[0] == 42
 """.strip()
 
 # language=python
@@ -21,12 +23,14 @@ PY_ASYNC = """
 import asyncio
 import mainpy
 
+result = [None]
+
 @mainpy.main
 async def async_main():
     print({!r})
-    return await asyncio.sleep(1e-6, 42)
+    result[0] = await asyncio.sleep(1e-6, 42)
 
-assert async_main == 42
+assert result[0] == 42
 """.strip()
 
 

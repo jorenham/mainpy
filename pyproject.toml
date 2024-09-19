@@ -104,14 +104,7 @@ stubPath = "."
 typeCheckingMode = "all"
 venv = ".venv"
 venvPath = "."
-
-reportAny = false
-reportInvalidCast = false
-reportUnusedCallResult = false
-# this appears to be broken since pyright 1.1.359
-reportUntypedFunctionDecorator = false
-# because of `sys.version_info()` conditionals
-reportUnreachable = false
+reportUnreachable = false  # unavoidable with `sys.version_info` conditionals
 
 
 [tool.repo-review]
