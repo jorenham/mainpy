@@ -24,9 +24,7 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
 ]
 requires-python = ">=3.9"
-dependencies = [
-  "typing-extensions>=4.1; python_version < '3.11'",
-]
+dependencies = []
 
 [project.urls]
 Repository = "https://github.com/jorenham/mainpy"
@@ -66,7 +64,6 @@ exclude = [
 
 [tool.uv]
 dev-dependencies = [
-  "typing-extensions",
   "uvloop; sys_platform != 'win32'",
 
   "basedpyright>=1.17.5,<2",
