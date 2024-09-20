@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  VERSION_UV: '0.4.10'
+  VERSION_UV: '0.4.11'
 
 jobs:
   lint:
@@ -51,6 +51,9 @@ jobs:
         uses: scientific-python/repo-review@v0.11.2
         with:
           plugins: sp-repo-review
+
+      - name: basedmypy
+        run: uv run mypy
 
       - name: basedpyright
         run: uv run basedpyright

@@ -67,6 +67,7 @@ dev-dependencies = [
   "typing_extensions>=4.12.2",
   "uvloop; sys_platform != 'win32'",
 
+  "basedmypy>=2.6.0,<3",
   "basedpyright>=1.17.5,<2",
   "codespell>=2.3.0,<3",
   "pytest>=8.3.3,<9",
@@ -104,6 +105,30 @@ venv = ".venv"
 venvPath = "."
 reportUnreachable = false  # unavoidable with `sys.version_info` conditionals
 
+
+[tool.mypy]
+python_version = "3.9"
+modules = ["mainpy", "tests"]
+exclude = ["^.venv/.*"]
+strict = true
+
+disallow_any_generics = true
+disallow_untyped_calls = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = false
+# based
+disallow_any_decorated = true
+disallow_any_explicit = true
+disallow_any_expr = true
+disallow_subclassing_any = true
+
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_any_decorated = false  # blame pytest
 
 [tool.repo-review]
 ignore = [
