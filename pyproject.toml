@@ -107,10 +107,21 @@ reportUnreachable = false  # unavoidable with `sys.version_info` conditionals
 
 
 [tool.mypy]
-modules = ["mainpy", "tests"]
+packages = ["mainpy", "tests"]
+exclude = ["examples/"]
 python_version = "3.9"
 strict = true
 warn_unreachable = false
+# https://github.com/KotlinIsland/basedmypy/issues/765
+disable_bytearray_promotion = true
+disable_memoryview_promotion = true
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+# blame pytest for these
+disallow_any_expr = false
+disallow_any_explicit = false
+disallow_any_decorated = false
 
 
 [tool.repo-review]
@@ -229,7 +240,6 @@ docstring-code-format = true
 indent-style = "space"
 line-ending = "lf"
 quote-style = "single"
-skip-magic-trailing-comma = true
 
 
 [tool.tox]
