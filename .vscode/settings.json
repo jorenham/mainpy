@@ -3,6 +3,7 @@
   "git.branchProtection": ["main"],
   "git.defaultBranchName": "main",
   "git.pullBeforeCheckout": true,
+  "mypy-type-checker.args": ["--ide"],
   "python.testing.pytestEnabled": true,
   "python.testing.unittestEnabled": false
 }
