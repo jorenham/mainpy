@@ -24,9 +24,7 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
 ]
 requires-python = ">=3.9"
-dependencies = [
-  "typing-extensions>=4.1; python_version < '3.11'",
-]
+dependencies = []
 
 [project.urls]
 Repository = "https://github.com/jorenham/mainpy"
@@ -66,7 +64,7 @@ exclude = [
 
 [tool.uv]
 dev-dependencies = [
-  "typing-extensions",
+  "typing_extensions>=4.12.2",
   "uvloop; sys_platform != 'win32'",
 
   "basedpyright>=1.17.5,<2",
@@ -104,14 +102,7 @@ stubPath = "."
 typeCheckingMode = "all"
 venv = ".venv"
 venvPath = "."
-
-reportAny = false
-reportInvalidCast = false
-reportUnusedCallResult = false
-# this appears to be broken since pyright 1.1.359
-reportUntypedFunctionDecorator = false
-# because of `sys.version_info()` conditionals
-reportUnreachable = false
+reportUnreachable = false  # unavoidable with `sys.version_info` conditionals
 
 
 [tool.repo-review]
