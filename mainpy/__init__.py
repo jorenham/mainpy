@@ -27,11 +27,11 @@ def _infer_debug() -> bool:
     if '--debug' in sys.argv[1:]:
         return True
 
-    env_debug = os.environ.get('DEBUG', '0')
+    env_debug_str = os.environ.get('DEBUG', '0')
     try:
-        env_debug = int(env_debug)
+        env_debug = int(env_debug_str)
     except ValueError as e:
-        errmsg = f'Invalid value for `DEBUG` env var: {env_debug!r}'
+        errmsg = f'Invalid value for `DEBUG` env var: {env_debug_str!r}'
         raise OSError(errmsg) from e
 
     return bool(env_debug)
@@ -70,7 +70,10 @@ class _HasCallbackFunction(Protocol[_R_co]):
     def __call__(self, /) -> _R_co: ...
 
 
-def _is_click_cmd(func: _F) -> TypeGuard[_HasCallbackFunction[_F]]:
+def _is_click_cmd(
+    func: _HasCallbackFunction[object] | _F,
+    /,
+) -> TypeGuard[_HasCallbackFunction[_F]]:
     return func.__module__ == 'click.core' and hasattr(func, 'callback')
 
 
@@ -84,7 +87,7 @@ def _unwrap_click(func: _HasCallbackFunction[object] | _F, /) -> _F | object:
     return func
 
 
-def _is_main_func(func: Callable[..., object], /) -> bool:
+def _is_main_func(func: Callable[[], object], /) -> bool:
     return _unwrap_click(func).__module__ == '__main__'
 
 
@@ -163,7 +166,7 @@ def main(
 
         return _main
 
-    if not callable(func):
+    if not callable(func):  # type: ignore[redundant-expr]
         errmsg = f'expected a callable, got {type(func)}'
         raise TypeError(errmsg)
 
@@ -171,7 +174,7 @@ def main(
         import inspect
 
         frame = inspect.currentframe()
-        if not frame or frame.f_globals.get('__name__') != '__main__':
+        if not frame or frame.f_globals.get('__name__') != '__main__':  # type: ignore[no-any-expr]
             return func
 
     if debug is None:
