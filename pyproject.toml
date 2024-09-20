@@ -110,11 +110,14 @@ reportUnreachable = false  # unavoidable with `sys.version_info` conditionals
 packages = ["mainpy", "tests"]
 exclude = ["examples/"]
 python_version = "3.9"
+
 strict = true
 warn_unreachable = false
 # https://github.com/KotlinIsland/basedmypy/issues/765
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
+# required by repo-review
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 
 [[tool.mypy.overrides]]
 module = ["tests.*"]
@@ -126,13 +129,12 @@ disallow_any_decorated = false
 
 [tool.repo-review]
 ignore = [
-  "PY004", # README.md >> docs/
-  "PC110", # optype's style >> (black | ruff-format)
-  "PC140", # (based)pyright >> mypy (by several orders of magnitude)
+  "PY004", # no docs
+  "PC110", # no autoformat
+  "PC140", # basedmypy > mypy
   "PC170", # no .rst
   "PC180", # no .css or .js
-  "MY", # (based)pyright >> mypy (by several orders of magnitude)
-  "RTD", # README.md >> rtd
+  "RTD", # no RTD
 ]
 
 
