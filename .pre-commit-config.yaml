@@ -7,6 +7,7 @@ ci:
     - poetry-lock
     - codespell
     - ruff
+    - basedmypy
     - basedpyright
     - basedpyright-verifytypes
 
@@ -54,13 +55,19 @@ repos:
           - tomli
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.3
+    rev: v0.6.6
     hooks:
       - id: ruff
         args: [--fix, --show-fixes]
 
   - repo: local
     hooks:
+      - id: basedmypy
+        name: basedmypy
+        entry: uv run mypy
+        language: system
+        types_or: [python, pyi]
+
       - id: basedpyright
         name: basedpyright
         entry: uv run basedpyright

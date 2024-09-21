@@ -1,5 +1,8 @@
 # ruff: noqa: ERA001
 import uuid
+from collections.abc import Callable
+from pathlib import Path
+from typing import cast
 
 import pytest
 
@@ -39,7 +42,7 @@ def test_output(pytester: pytest.Pytester, template: str):
     output_expect = uuid.uuid4().hex
     script = template.format(output_expect)
 
-    fh = pytester.makepyfile('test.py')  # pyright: ignore[reportUnknownMemberType]
+    fh = cast(Callable[[str], Path], pytester.makepyfile)('test.py')
     _ = fh.write_text(script)
 
     result = pytester.runpython(fh)

@@ -4,23 +4,30 @@ from __future__ import annotations
 import asyncio
 import importlib.util
 import inspect
-from typing import Any, Callable, TypeVar
+from typing import TYPE_CHECKING, Callable, TypeVar
 
 import pytest
 
 import mainpy as mp
 
 
-_F = TypeVar('_F', bound=Callable[..., Any])
+if TYPE_CHECKING:
+    from collections.abc import Generator
 
 
-def _patch_module(monkeypatch: pytest.MonkeyPatch, module: str):
+_F = TypeVar('_F', bound=Callable[..., object])
+
+
+def _patch_module(
+    monkeypatch: pytest.MonkeyPatch,
+    module: str,
+) -> Callable[[_F], _F]:
     # Patch the module name in the frame
     frame = inspect.currentframe()
     assert frame is not None
     monkeypatch.setitem(frame.f_globals, '__name__', module)
 
-    def __patch_module(fn: _F) -> _F:
+    def __patch_module(fn: _F, /) -> _F:
         # Patch the module name in the function
         monkeypatch.setattr(fn, '__module__', module)
         return fn
@@ -29,7 +36,7 @@ def _patch_module(monkeypatch: pytest.MonkeyPatch, module: str):
 
 
 @pytest.fixture()
-def no_uvloop():
+def no_uvloop() -> Generator[Callable[[], bool], None, None]:
     orig = mp._infer_uvloop
     mp._infer_uvloop = lambda: False
 
