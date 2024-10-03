@@ -1,0 +1,59 @@
+name: Release
+on:
+  release:
+    types: [prereleased, released]
+
+jobs:
+
+  # Prepare and publish the package to pypi
+  release:
+    name: Publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+
+      # Check out the current repository
+      - name: Fetch Sources
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      # Set up python for the next steps
+      - name: set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: setup uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: ${{ env.VERSION_UV }}
+          enable-cache: true
+
+      # Set environment variables
+      - name: Export Properties
+        id: properties
+        shell: bash
+        run: |
+          CHANGELOG="$(cat << 'EOM' | sed -e 's/^[[:space:]]*$//g' -e '/./,$!d'
+          ${{ github.event.release.body }}
+          EOM
+          )"
+
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      # Publish the package to pypi
+      - name: Publish
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }} # TODO
+        run: uv publish
+
+      # Upload wheel as a release asset
+      - name: Upload Release Asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.event.release.tag_name }} ./dist/*
