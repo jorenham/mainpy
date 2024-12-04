@@ -2,18 +2,13 @@ ci:
   autoupdate_branch: "main"
   autoupdate_commit_msg: "update pre-commit hooks"
   skip:
-    - markdownlint
-    - poetry-check
-    - poetry-lock
-    - codespell
-    - ruff
     - basedmypy
     - basedpyright
     - basedpyright-verifytypes
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-added-large-files
       - id: check-ast
@@ -43,7 +38,7 @@ repos:
         args: [--markdown-linebreak-ext=md]
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.41.0
+    rev: v0.43.0
     hooks:
       - id: markdownlint
 
@@ -55,7 +50,7 @@ repos:
           - tomli
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.6
+    rev: v0.8.1
     hooks:
       - id: ruff
         args: [--fix, --show-fixes]
