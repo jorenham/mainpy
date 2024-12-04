@@ -1,6 +1,5 @@
-"""
-Run as `python click_group.py app`.
-"""
+"""Run as `python click_group.py app`."""
+
 import click
 
 import mainpy
@@ -8,6 +7,7 @@ import mainpy
 
 @click.group()
 def group() -> None: ...
+
 
 @group.command()
 def app() -> None:
