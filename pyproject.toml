@@ -10,21 +10,26 @@ version = "1.4.1dev0"
 authors = [
   {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
 ]
-license = {text = "MIT"}
+license = "MIT"
 readme = "README.md"
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
-  "Typing :: Typed",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
 ]
 requires-python = ">=3.9"
 dependencies = []
+
+[project.optional-dependencies]
+uvloop = [
+  "uvloop>=0.15.2; sys_platform != 'win32'",
+]
 
 [project.urls]
 Repository = "https://github.com/jorenham/mainpy"
@@ -32,12 +37,6 @@ Documentation = "https://github.com/jorenham/mainpy?tab=readme-ov-file#mainpy"
 Issues = "https://github.com/jorenham/mainpy/issues"
 Changelog = "https://github.com/jorenham/mainpy/releases"
 Funding = "https://github.com/sponsors/jorenham"
-
-[project.optional-dependencies]
-uvloop = [
-  # TODO: allow py313 once uvloop 0.21 is released,
-  "uvloop>=0.15.2,<1; sys_platform != 'win32' and python_version < '3.13'",
-]
 
 
 [tool.hatch.build.targets.sdist]
@@ -62,22 +61,21 @@ exclude = [
 ]
 
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
   "typing_extensions>=4.12.2",
-  "uvloop; sys_platform != 'win32'",
+  "uvloop>=0.21.0; sys_platform != 'win32'",
 
-  "basedmypy>=2.6.0,<3",
-  "basedpyright>=1.17.5,<2",
-  "codespell>=2.3.0,<3",
-  "pytest>=8.3.3,<9",
-  "ruff>=0.6.6,<0.7",
+  "basedmypy[faster-cache]>=2.8.0",
+  "basedpyright>=1.22.1",
+  "codespell>=2.3.0",
+  "pytest>=8.3.4",
+  "ruff>=0.8.1",
 
-  "pre-commit>=3.8.0",
-  "tox>=4.20.0",
+  "pre-commit>=4.0.1",
+  "tox>=4.23.2",
   "sp-repo-review[cli]>=2024.8.19; python_version >= '3.10'",
 ]
-python-downloads = "manual"
 
 
 [tool.codespell]
