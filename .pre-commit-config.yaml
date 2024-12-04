@@ -2,11 +2,6 @@ ci:
   autoupdate_branch: "main"
   autoupdate_commit_msg: "update pre-commit hooks"
   skip:
-    - markdownlint
-    - poetry-check
-    - poetry-lock
-    - codespell
-    - ruff
     - basedmypy
     - basedpyright
     - basedpyright-verifytypes
