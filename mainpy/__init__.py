@@ -155,9 +155,9 @@ def main(
     """
     if func is None:
 
-        def _main(_func: _F, /) -> _F:
+        def _main(func_: _F, /) -> _F:
             return main(
-                _func,
+                func_,
                 debug=debug,
                 is_async=is_async,
                 use_uvloop=use_uvloop,
