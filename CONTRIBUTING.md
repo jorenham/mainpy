@@ -187,27 +187,6 @@ You can install the lowest supported Python version with
 uv sync --python 3.9
 ```
 
-### pre-commit
-
-Mainpy uses [pre-commit](https://pre-commit.com/) to ensure that the code is
-formatted and typed correctly when committing the changes.
-
-You can install it with
-
-```bash
-uv run pre-commit install
-```
-
-It can also be manually run:
-
-```bash
-uv run pre-commit run --all-files
-```
-
-> [!NOTE]
-> Pre-commit doesn't run the tests. This will be run by github actions when
-> submitting a pull request. See the next section for more details.
-
 ### Testing
 
 Mainpy uses [pytest](https://docs.pytest.org/en/stable/) for unit testing.

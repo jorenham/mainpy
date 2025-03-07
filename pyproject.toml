@@ -50,7 +50,6 @@ dev = [
   "pytest>=8.3.4",
   "ruff>=0.8.1",
 
-  "pre-commit>=4.0.1",
   "tox>=4.23.2",
   "sp-repo-review[cli]>=2024.8.19; python_version >= '3.10'",
 ]
@@ -72,7 +71,6 @@ exclude = [
     ".editorconfig",
     ".gitignore",
     ".markdownlint.yaml",
-    ".pre-commit-config.yaml",
     "uv.lock",
 ]
 
@@ -127,6 +125,7 @@ disallow_any_decorated = false
 [tool.repo-review]
 ignore = [
   "PY004", # no docs
+  "PY006", # no pre-commit
   "PC110", # no autoformat
   "PC140", # basedmypy > mypy
   "PC170", # no .rst
@@ -245,7 +244,6 @@ isolated_build = true
 requires = tox>=4
 envlist =
     repo-review
-    pre-commit
     py{39,310,311.312,313}
 
 [testenv]
@@ -254,13 +252,6 @@ skip_install = true
 allowlist_externals = uv
 commands_pre = uv sync --frozen --dev
 commands = uv run pytest
-
-[testenv:pre-commit]
-description = pre-commit
-skip_install = true
-allowlist_externals = uv
-commands_pre = uv sync --frozen --dev
-commands = uv run pre-commit run --all-files
 
 [testenv:repo-review]
 description = repo-review
