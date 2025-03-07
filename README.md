@@ -27,10 +27,10 @@
             src="https://github.com/jorenham/mainpy/workflows/CI/badge.svg"
         />
     </a>
-    <a href="https://github.com/pre-commit/pre-commit">
+    <a href="https://github.com/jorenham/mainpy">
         <img
-            alt="mainpy - pre-commit"
-            src="https://img.shields.io/badge/pre--commit-enabled-orange?logo=pre-commit"
+            alt="scipy-stubs - typed"
+            src="https://img.shields.io/pypi/types/mainpy?color=blue&style=flat"
         />
     </a>
     <a href="https://github.com/KotlinIsland/basedmypy">
