@@ -125,6 +125,7 @@ disallow_any_decorated = false
 [tool.repo-review]
 ignore = [
   "PY004", # no docs
+  "PY006", # no pre-commit
   "PC110", # no autoformat
   "PC140", # basedmypy > mypy
   "PC170", # no .rst
