@@ -41,17 +41,17 @@ Funding = "https://github.com/sponsors/jorenham"
 
 [dependency-groups]
 dev = [
-  "typing_extensions>=4.12.2",
+  "typing_extensions>=4.15.0",
   "uvloop>=0.21.0; sys_platform != 'win32'",
 
-  "basedmypy[faster-cache]>=2.9.1",
-  "basedpyright>=1.28.1",
+  "basedmypy[faster-cache]>=2.10.0",
+  "basedpyright>=1.31.6",
   "codespell>=2.4.1",
-  "pytest>=8.3.5",
-  "ruff>=0.9.9",
+  "pytest>=8.4.2",
+  "ruff>=0.14.0",
 
-  "tox>=4.24.1",
-  "sp-repo-review[cli]>=2025.1.22; python_version >= '3.10'",
+  "tox>=4.30.3",
+  "sp-repo-review[cli]>=2025.10.1; python_version >= '3.10'",
 ]
 
 
