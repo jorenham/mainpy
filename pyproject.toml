@@ -14,7 +14,6 @@ license = "MIT"
 readme = "README.md"
 classifiers = [
   "Development Status :: 5 - Production/Stable",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
@@ -41,17 +40,17 @@ Funding = "https://github.com/sponsors/jorenham"
 
 [dependency-groups]
 dev = [
-  "typing_extensions>=4.12.2",
+  "typing_extensions>=4.15.0",
   "uvloop>=0.21.0; sys_platform != 'win32'",
 
-  "basedmypy[faster-cache]>=2.9.1",
-  "basedpyright>=1.28.1",
+  "mypy[faster-cache]>=1.18.2",
+  "basedpyright>=1.31.6",
   "codespell>=2.4.1",
-  "pytest>=8.3.5",
-  "ruff>=0.9.9",
+  "pytest>=8.4.2",
+  "ruff>=0.14.0",
 
-  "tox>=4.24.1",
-  "sp-repo-review[cli]>=2025.1.22; python_version >= '3.10'",
+  "tox>=4.30.3",
+  "sp-repo-review[cli]>=2025.10.1; python_version >= '3.10'",
 ]
 
 
@@ -107,10 +106,8 @@ exclude = ["examples/"]
 python_version = "3.9"
 
 strict = true
+strict_bytes = true
 warn_unreachable = false
-# https://github.com/KotlinIsland/basedmypy/issues/765
-disable_bytearray_promotion = true
-disable_memoryview_promotion = true
 # required by repo-review
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 
@@ -127,7 +124,6 @@ ignore = [
   "PY004", # no docs
   "PY006", # no pre-commit
   "PC110", # no autoformat
-  "PC140", # basedmypy > mypy
   "PC170", # no .rst
   "PC180", # no .css or .js
   "RTD", # no RTD

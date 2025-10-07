@@ -46,45 +46,45 @@ def no_uvloop() -> Generator[Callable[[], bool], None, None]:
         mp._infer_uvloop = orig
 
 
-def test_not_main(monkeypatch: pytest.MonkeyPatch):
+def test_not_main(monkeypatch: pytest.MonkeyPatch) -> None:
     @mp.main
     @_patch_module(monkeypatch, 'spam')
-    def app():
+    def app() -> None:
         pytest.fail('not main')
 
     assert callable(app)
 
 
-def test_sync(monkeypatch: pytest.MonkeyPatch):
+def test_sync(monkeypatch: pytest.MonkeyPatch) -> None:
     result: list[object] = [None]
 
     @mp.main(is_async=False)
     @_patch_module(monkeypatch, '__main__')
-    def app():
+    def app() -> None:
         result[0] = 'spam'
 
     assert result[0] == 'spam'
     assert callable(app)
 
 
-def test_sync_implicit(monkeypatch: pytest.MonkeyPatch):
+def test_sync_implicit(monkeypatch: pytest.MonkeyPatch) -> None:
     result: list[object] = [None]
 
     @mp.main
     @_patch_module(monkeypatch, '__main__')
-    def app():
+    def app() -> None:
         result[0] = 'spam'
 
     assert result[0] == 'spam'
     assert callable(app)
 
 
-def test_async(monkeypatch: pytest.MonkeyPatch):
+def test_async(monkeypatch: pytest.MonkeyPatch) -> None:
     result: list[object] = [None]
 
     @mp.main(is_async=True, use_uvloop=False)
     @_patch_module(monkeypatch, '__main__')
-    async def app():
+    async def app() -> None:
         result[0] = await asyncio.sleep(0, 'spam')
 
     assert result[0] == 'spam'
@@ -95,12 +95,15 @@ def test_async(monkeypatch: pytest.MonkeyPatch):
     )
 
 
-def test_async_implicit(no_uvloop: None, monkeypatch: pytest.MonkeyPatch):  # pyright: ignore[reportUnusedParameter]
+def test_async_implicit(
+    no_uvloop: None,  # pyright: ignore[reportUnusedParameter]
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     result: list[object] = [None]
 
     @mp.main
     @_patch_module(monkeypatch, '__main__')
-    async def app():
+    async def app() -> None:
         result[0] = await asyncio.sleep(0, 'spam')
 
     assert result[0] == 'spam'
@@ -111,12 +114,12 @@ def test_async_implicit(no_uvloop: None, monkeypatch: pytest.MonkeyPatch):  # py
     )
 
 
-def test_async_implicit_uvloop(monkeypatch: pytest.MonkeyPatch):
+def test_async_implicit_uvloop(monkeypatch: pytest.MonkeyPatch) -> None:
     result: list[object] = [None]
 
     @mp.main
     @_patch_module(monkeypatch, '__main__')
-    async def loop_module():
+    async def loop_module() -> None:
         await asyncio.sleep(0)
         loop = asyncio.get_running_loop()
         result[0] = loop.__module__.split('.')[0]
