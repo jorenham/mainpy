@@ -2,14 +2,15 @@ from __future__ import annotations
 
 import os
 import sys
-from typing import TYPE_CHECKING, Callable, Protocol, TypeVar, cast, overload
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Protocol, TypeGuard, TypeVar, cast, overload
 
 
 if TYPE_CHECKING:
     import contextvars
     from collections.abc import Coroutine
 
-    from typing_extensions import Never, TypeGuard
+    from typing_extensions import Never
 
 __all__ = ('main',)
 

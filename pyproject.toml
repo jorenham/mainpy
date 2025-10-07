@@ -10,7 +10,7 @@ module-root = ""
 [project]
 name = "mainpy"
 description = "Simplify your project entrypoint with @main"
-version = "1.4.1dev0"
+version = "1.5.0.dev0"
 authors = [
   {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
 ]
@@ -20,14 +20,14 @@ readme = "README.md"
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Operating System :: OS Independent",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Typing :: Typed",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = []
 
 [project.optional-dependencies]
@@ -46,7 +46,8 @@ Funding = "https://github.com/sponsors/jorenham"
 [dependency-groups]
 dev = [
   "typing_extensions>=4.15.0",
-  "uvloop>=0.21.0; sys_platform != 'win32'",
+  # there are no py314 uvloop wheels yet
+  "uvloop>=0.21.0; sys_platform != 'win32' and python_version < '3.14'",
 
   "mypy[faster-cache]>=1.18.2",
   "basedpyright>=1.31.6",
@@ -55,7 +56,7 @@ dev = [
   "ruff>=0.14.0",
 
   "tox>=4.30.3",
-  "sp-repo-review[cli]>=2025.10.1; python_version >= '3.10'",
+  "sp-repo-review[cli]>=2025.10.1",
 ]
 
 
@@ -97,7 +98,6 @@ xfail_strict = true
 ignore = ["**/.venv", "examples"]
 include = ["mainpy", "tests"]
 pythonPlatform = "All"
-pythonVersion = "3.9"
 stubPath = "."
 typeCheckingMode = "all"
 venv = ".venv"
@@ -108,7 +108,6 @@ reportUnreachable = false  # unavoidable with `sys.version_info` conditionals
 [tool.mypy]
 packages = ["mainpy", "tests"]
 exclude = ["examples/"]
-python_version = "3.9"
 
 strict = true
 strict_bytes = true
@@ -245,7 +244,7 @@ isolated_build = true
 requires = tox>=4
 envlist =
     repo-review
-    py{39,310,311.312,313}
+    py{310,311.312,313,314}
 
 [testenv]
 description = pytest

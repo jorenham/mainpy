@@ -4,7 +4,7 @@ from __future__ import annotations
 import asyncio
 import importlib.util
 import inspect
-from typing import TYPE_CHECKING, Callable, TypeVar
+from typing import TYPE_CHECKING, TypeVar
 
 import pytest
 
@@ -12,10 +12,10 @@ import mainpy as mp
 
 
 if TYPE_CHECKING:
-    from collections.abc import Generator
+    from collections.abc import Callable, Generator
 
 
-_F = TypeVar('_F', bound=Callable[..., object])
+_F = TypeVar('_F', bound='Callable[..., object]')
 
 
 def _patch_module(
@@ -79,6 +79,9 @@ def test_sync_implicit(monkeypatch: pytest.MonkeyPatch) -> None:
     assert callable(app)
 
 
+@pytest.mark.filterwarnings(
+    r"ignore:'asyncio.\w+' is deprecated:DeprecationWarning",
+)
 def test_async(monkeypatch: pytest.MonkeyPatch) -> None:
     result: list[object] = [None]
 
@@ -95,6 +98,9 @@ def test_async(monkeypatch: pytest.MonkeyPatch) -> None:
     )
 
 
+@pytest.mark.filterwarnings(
+    r"ignore:'asyncio.\w+' is deprecated:DeprecationWarning",
+)
 def test_async_implicit(
     no_uvloop: None,  # pyright: ignore[reportUnusedParameter]
     monkeypatch: pytest.MonkeyPatch,

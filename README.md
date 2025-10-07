@@ -207,7 +207,7 @@ def app(): ...
 
 ## Installation
 
-The `mainpy` package is available on [pypi][PYPI] for Python $\ge 3.9$:
+The `mainpy` package is available on [pypi][PYPI] for Python $\ge 3.10$:
 
 ```shell
 pip install mainpy
