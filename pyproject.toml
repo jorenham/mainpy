@@ -10,7 +10,7 @@ module-root = ""
 [project]
 name = "mainpy"
 description = "Simplify your project entrypoint with @main"
-version = "1.5.0.dev0"
+version = "1.5.0"
 authors = [
   {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
 ]
