@@ -4,7 +4,8 @@ from __future__ import annotations
 import asyncio
 import importlib.util
 import inspect
-from typing import TYPE_CHECKING, Callable, TypeVar
+from collections.abc import Callable
+from typing import TYPE_CHECKING, TypeVar
 
 import pytest
 
