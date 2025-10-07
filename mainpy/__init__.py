@@ -166,7 +166,7 @@ def main(
 
         return _main
 
-    if not callable(func):  # type: ignore[redundant-expr]
+    if not callable(func):
         errmsg = f'expected a callable, got {type(func)}'
         raise TypeError(errmsg)
 
@@ -174,7 +174,7 @@ def main(
         import inspect
 
         frame = inspect.currentframe()
-        if not frame or frame.f_globals.get('__name__') != '__main__':  # type: ignore[no-any-expr]
+        if not frame or frame.f_globals.get('__name__') != '__main__':
             return func
 
     if debug is None:

@@ -43,7 +43,7 @@ dev = [
   "typing_extensions>=4.15.0",
   "uvloop>=0.21.0; sys_platform != 'win32'",
 
-  "basedmypy[faster-cache]>=2.10.0",
+  "mypy[faster-cache]>=1.18.2",
   "basedpyright>=1.31.6",
   "codespell>=2.4.1",
   "pytest>=8.4.2",
@@ -106,10 +106,8 @@ exclude = ["examples/"]
 python_version = "3.9"
 
 strict = true
+strict_bytes = true
 warn_unreachable = false
-# https://github.com/KotlinIsland/basedmypy/issues/765
-disable_bytearray_promotion = true
-disable_memoryview_promotion = true
 # required by repo-review
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 
@@ -126,7 +124,6 @@ ignore = [
   "PY004", # no docs
   "PY006", # no pre-commit
   "PC110", # no autoformat
-  "PC140", # basedmypy > mypy
   "PC170", # no .rst
   "PC180", # no .css or .js
   "RTD", # no RTD

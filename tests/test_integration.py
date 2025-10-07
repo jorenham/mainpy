@@ -40,7 +40,7 @@ assert result[0] == 42
 
 
 @pytest.mark.parametrize('template', [PY_SYNC, PY_ASYNC])
-def test_output(pytester: pytest.Pytester, template: str):
+def test_output(pytester: pytest.Pytester, template: str) -> None:
     output_expect = uuid.uuid4().hex
     script = template.format(output_expect)
 

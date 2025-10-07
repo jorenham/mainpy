@@ -33,11 +33,8 @@
             src="https://img.shields.io/pypi/types/mainpy?color=blue&style=flat"
         />
     </a>
-    <a href="https://github.com/KotlinIsland/basedmypy">
-        <img
-            alt="mainpy - basedmypy"
-            src="https://img.shields.io/badge/basedmypy-checked-fd9002"
-        />
+    <a href="https://github.com/python/mypy">
+        <img alt="mypy" src="https://img.shields.io/badge/mypy-checked-olive?style=flat-square&logo=python">
     </a>
     <a href="https://detachhead.github.io/basedpyright">
         <img
