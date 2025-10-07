@@ -97,7 +97,6 @@ xfail_strict = true
 ignore = ["**/.venv", "examples"]
 include = ["mainpy", "tests"]
 pythonPlatform = "All"
-pythonVersion = "3.9"
 stubPath = "."
 typeCheckingMode = "all"
 venv = ".venv"
@@ -108,7 +107,6 @@ reportUnreachable = false  # unavoidable with `sys.version_info` conditionals
 [tool.mypy]
 packages = ["mainpy", "tests"]
 exclude = ["examples/"]
-python_version = "3.9"
 
 strict = true
 strict_bytes = true
