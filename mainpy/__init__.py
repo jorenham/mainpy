@@ -3,13 +3,12 @@ from __future__ import annotations
 import os
 import sys
 from collections.abc import Callable
-from typing import TYPE_CHECKING, Protocol, TypeVar, cast, overload
+from typing import TYPE_CHECKING, Protocol, TypeGuard, TypeVar, cast, overload
 
 
 if TYPE_CHECKING:
     import contextvars
     from collections.abc import Coroutine
-    from typing import TypeGuard
 
     from typing_extensions import Never
 
