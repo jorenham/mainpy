@@ -1,4 +1,3 @@
-# ruff: noqa: ERA001
 import uuid
 from typing import TYPE_CHECKING, cast
 
