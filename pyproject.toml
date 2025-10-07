@@ -20,14 +20,14 @@ readme = "README.md"
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Operating System :: OS Independent",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Typing :: Typed",
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = []
 
 [project.optional-dependencies]
@@ -55,7 +55,7 @@ dev = [
   "ruff>=0.14.0",
 
   "tox>=4.30.3",
-  "sp-repo-review[cli]>=2025.10.1; python_version >= '3.10'",
+  "sp-repo-review[cli]>=2025.10.1",
 ]
 
 
@@ -245,7 +245,7 @@ isolated_build = true
 requires = tox>=4
 envlist =
     repo-review
-    py{39,310,311.312,313}
+    py{310,311.312,313,314}
 
 [testenv]
 description = pytest

@@ -1,14 +1,14 @@
 name: CI
+permissions: read-all
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 jobs:
@@ -34,10 +34,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v6.8.0
         with:
-          enable-cache: true
-
-      - name: uv sync
-        run: uv sync --frozen --python 3.9
+          python-version: "3.10"
 
       - name: codespell
         run: uv run codespell .
@@ -59,8 +56,8 @@ jobs:
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ["3.9", "3.13"]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10", "3.11", "3.12", "3.13", "3.14"]
 
     runs-on: ${{ matrix.os }}
 
@@ -71,10 +68,7 @@ jobs:
       - name: setup uv
         uses: astral-sh/setup-uv@v6.8.0
         with:
-          enable-cache: true
-
-      - name: uv sync
-        run: uv sync --frozen --python ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version }}
 
       - name: pytest
         run: uv run pytest
