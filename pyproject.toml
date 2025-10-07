@@ -46,7 +46,8 @@ Funding = "https://github.com/sponsors/jorenham"
 [dependency-groups]
 dev = [
   "typing_extensions>=4.15.0",
-  "uvloop>=0.21.0; sys_platform != 'win32'",
+  # there are no py314 uvloop wheels yet
+  "uvloop>=0.21.0; sys_platform != 'win32' and python_version < '3.14'",
 
   "mypy[faster-cache]>=1.18.2",
   "basedpyright>=1.31.6",

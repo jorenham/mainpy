@@ -79,6 +79,9 @@ def test_sync_implicit(monkeypatch: pytest.MonkeyPatch) -> None:
     assert callable(app)
 
 
+@pytest.mark.filterwarnings(
+    r"ignore:'asyncio.\w+' is deprecated:DeprecationWarning",
+)
 def test_async(monkeypatch: pytest.MonkeyPatch) -> None:
     result: list[object] = [None]
 
@@ -95,6 +98,9 @@ def test_async(monkeypatch: pytest.MonkeyPatch) -> None:
     )
 
 
+@pytest.mark.filterwarnings(
+    r"ignore:'asyncio.\w+' is deprecated:DeprecationWarning",
+)
 def test_async_implicit(
     no_uvloop: None,  # pyright: ignore[reportUnusedParameter]
     monkeypatch: pytest.MonkeyPatch,
