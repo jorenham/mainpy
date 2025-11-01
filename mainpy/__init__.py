@@ -115,7 +115,7 @@ def _run_async(
         if use_uvloop:
             import uvloop
 
-            uvloop.install()
+            uvloop.install()  # pyright: ignore[reportAny]
 
         result = asyncio.run(coro, debug=debug)
 
