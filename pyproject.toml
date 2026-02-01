@@ -124,6 +124,7 @@ src = ["mainpy", "tests"]
 ignore = [
     "ANN401",  # flake8-annotations: any-type
     "PLC0415", # pylint: import-outside-top-level
+    "RUF067",  # ruff: non-empty-init-module
 ]
 preview = true
 select = [
