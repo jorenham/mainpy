@@ -47,13 +47,13 @@ dev = [
     "uvloop>=0.22.1; sys_platform != 'win32'",
     "typing_extensions>=4.15.0",
 
-    "mypy[faster-cache]>=1.19.0",
-    "basedpyright>=1.34.0",
+    "mypy[faster-cache]>=1.19.1",
+    "basedpyright>=1.37.3",
     "codespell>=2.4.1",
-    "pytest>=9.0.1",
-    "ruff>=0.14.7",
+    "pytest>=9.0.2",
+    "ruff>=0.14.14",
 
-    "tox>=4.32.0",
+    "tox>=4.34.1",
     "sp-repo-review[cli]>=2025.11.21",
 ]
 
@@ -124,6 +124,7 @@ src = ["mainpy", "tests"]
 ignore = [
     "ANN401",  # flake8-annotations: any-type
     "PLC0415", # pylint: import-outside-top-level
+    "RUF067",  # ruff: non-empty-init-module
 ]
 preview = true
 select = [
