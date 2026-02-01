@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: markdownlint
         uses: DavidAnson/markdownlint-cli2-action@v22
@@ -32,7 +32,7 @@ jobs:
           plugins: sp-repo-review
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7.1.6
+        uses: astral-sh/setup-uv@v7.2.1
         with:
           python-version: "3.10"
 
@@ -64,10 +64,10 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: setup uv
-        uses: astral-sh/setup-uv@v7.1.6
+        uses: astral-sh/setup-uv@v7.2.1
         with:
           python-version: ${{ matrix.python-version }}
 
