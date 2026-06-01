@@ -27,7 +27,7 @@ jobs:
           globs: "*.md"
 
       - name: repo-review
-        uses: scientific-python/repo-review@v1.0.3
+        uses: scientific-python/repo-review@v1.1.3
         with:
           plugins: sp-repo-review
 
