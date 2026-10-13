@@ -69,6 +69,7 @@ boilerplate anymore:
 if __name__ == '__main__':
     app()
 
+
 def app(): ...
 ```
 
@@ -77,6 +78,7 @@ def app(): ...
 
 ```python
 from mainpy import main
+
 
 @main
 def app(): ...
@@ -99,7 +101,9 @@ For async apps, the improvement becomes even more obvious:
 ```python
 import asyncio
 
+
 async def async_app(): ...
+
 
 if __name__ == '__main__':
     with asyncio.Runner() as runner:
@@ -111,6 +115,7 @@ if __name__ == '__main__':
 
 ```python
 from mainpy import main
+
 
 @main
 async def async_app(): ...
@@ -148,6 +153,7 @@ With [`click`][CLICK] you can simply add the decorator as usual.
 import mainpy
 import click
 
+
 @mainpy.main
 @click.command()
 def click_command():
@@ -162,11 +168,14 @@ In this case, `mainpy.main` should be called *after* all has been setup:
 import mainpy
 import click
 
+
 @click.group()
 def group(): ...
 
+
 @group.command()
 def command(): ...
+
 
 mainpy.main(group)
 ```
@@ -184,9 +193,11 @@ import typer
 
 app = typer.Typer()
 
+
 @app.command()
 def command():
     typer.echo('typer.Typer()')
+
 
 mainpy.main(command)
 ```
