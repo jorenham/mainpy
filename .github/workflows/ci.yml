@@ -1,5 +1,5 @@
 name: CI
-permissions: read-all
+permissions: {}
 
 on:
   push:
@@ -12,29 +12,34 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  lint: # zizmor: ignore[anonymous-definition] -- naming it changes the required status check
     timeout-minutes: 5
     runs-on: ubuntu-latest
 
     steps:
       - name: checkout
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: markdownlint
-        uses: DavidAnson/markdownlint-cli2-action@v24
+        uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff # v24.2.0
         with:
           config: ".markdownlint.yaml"
           globs: "*.md"
 
-      - name: repo-review
-        uses: scientific-python/repo-review@v1.2.1
-        with:
-          plugins: sp-repo-review
-
       - name: Install uv
-        uses: astral-sh/setup-uv@v9.0.0
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
           python-version: "3.11"
+
+      # the `scientific-python/repo-review` action internally uses an unpinned
+      # `actions/setup-python`, so we use `uvx` instead.
+      - name: repo-review
+        run: >
+          uvx --from='repo-review[cli]' --with=sp-repo-review
+          repo-review --format html --stderr rich .
+          >> $GITHUB_STEP_SUMMARY
 
       - name: codespell
         run: uv run codespell .
@@ -51,7 +56,7 @@ jobs:
       - name: basedpyright --verifytypes
         run: uv run basedpyright --ignoreexternal --verifytypes mainpy
 
-  test:
+  test: # zizmor: ignore[anonymous-definition] -- naming it changes the required status checks
     timeout-minutes: 5
 
     strategy:
@@ -64,10 +69,12 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: setup uv
-        uses: astral-sh/setup-uv@v9.0.0
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
           python-version: ${{ matrix.python-version }}
 
