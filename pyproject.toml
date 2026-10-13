@@ -19,19 +19,19 @@ readme = "README.md"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Typing :: Typed",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = []
 
 [project.optional-dependencies]
 uvloop = [
-    "uvloop>=0.15.2; sys_platform != 'win32'",
+    "uvloop>=0.18.0; sys_platform != 'win32'",
 ]
 
 [project.urls]
@@ -222,7 +222,7 @@ isolated_build = true
 requires = tox>=4
 envlist =
     repo-review
-    py{310,311.312,313,314}
+    py{311.312,313,314,315}
 
 [testenv]
 description = pytest
