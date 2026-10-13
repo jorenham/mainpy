@@ -34,7 +34,10 @@
         />
     </a>
     <a href="https://github.com/python/mypy">
-        <img alt="mypy" src="https://img.shields.io/badge/mypy-checked-olive?style=flat-square&logo=python">
+        <img
+            alt="mypy"
+            src="https://img.shields.io/badge/mypy-checked-olive?style=flat-square&logo=python"
+        >
     </a>
     <a href="https://detachhead.github.io/basedpyright">
         <img

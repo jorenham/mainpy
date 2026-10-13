@@ -22,16 +22,13 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: markdownlint
-        uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff # v24.2.0
-        with:
-          config: ".markdownlint.yaml"
-          globs: "*.md"
-
       - name: Install uv
         uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
           python-version: "3.11"
+
+      - name: dprint
+        run: uv run dprint check
 
       # the `scientific-python/repo-review` action internally uses an unpinned
       # `actions/setup-python`, so we use `uvx` instead.
