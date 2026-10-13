@@ -1,16 +1,21 @@
-from __future__ import annotations
-
 import os
 import sys
 from collections.abc import Callable
-from typing import TYPE_CHECKING, Protocol, TypeGuard, TypeVar, cast, overload
+from typing import (
+    TYPE_CHECKING,
+    Never,
+    Protocol,
+    TypeGuard,
+    TypeVar,
+    cast,
+    overload,
+)
 
 
 if TYPE_CHECKING:
     import contextvars
     from collections.abc import Coroutine
 
-    from typing_extensions import Never
 
 __all__ = ('main',)
 
@@ -93,33 +98,23 @@ def _is_main_func(func: Callable[[], object], /) -> bool:
 
 
 def _run_async(
-    coro: Coroutine[object, object, object],
+    coro: 'Coroutine[object, object, object]',
     /,
     *,
     debug: bool,
     use_uvloop: bool,
-    context: contextvars.Context | None,
+    context: 'contextvars.Context | None',
 ) -> object:
     import asyncio
 
-    if sys.version_info >= (3, 11):
-        loop_factory = None
-        if use_uvloop:
-            import uvloop
+    loop_factory = None
+    if use_uvloop:
+        import uvloop
 
-            loop_factory = uvloop.new_event_loop
+        loop_factory = uvloop.new_event_loop
 
-        with asyncio.Runner(debug=debug, loop_factory=loop_factory) as runner:
-            result = runner.run(coro, context=context)
-    else:
-        if use_uvloop:
-            import uvloop
-
-            uvloop.install()
-
-        result = asyncio.run(coro, debug=debug)
-
-    return result
+    with asyncio.Runner(debug=debug, loop_factory=loop_factory) as runner:
+        return runner.run(coro, context=context)
 
 
 @overload
@@ -130,7 +125,7 @@ def main(
     debug: bool | None = None,
     is_async: bool | None = None,
     use_uvloop: bool | None = None,
-    context: contextvars.Context | None = None,
+    context: 'contextvars.Context | None' = None,
 ) -> Callable[[_F], _F]: ...
 @overload
 def main(
@@ -140,7 +135,7 @@ def main(
     debug: bool | None = None,
     is_async: bool | None = None,
     use_uvloop: bool | None = None,
-    context: contextvars.Context | None = None,
+    context: 'contextvars.Context | None' = None,
 ) -> _F: ...
 def main(
     func: _F | None = None,
@@ -149,7 +144,7 @@ def main(
     debug: bool | None = None,
     is_async: bool | None = None,
     use_uvloop: bool | None = None,
-    context: contextvars.Context | None = None,
+    context: 'contextvars.Context | None' = None,
 ) -> Callable[[_F], _F] | _F:
     """
     Decorate a function to be the main entrypoint.
