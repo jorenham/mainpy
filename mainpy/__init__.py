@@ -115,7 +115,7 @@ def _run_async(
         if use_uvloop:
             import uvloop
 
-            uvloop.install()  # pyright: ignore[reportAny]
+            uvloop.install()
 
         result = asyncio.run(coro, debug=debug)
 
@@ -204,6 +204,6 @@ def main(
 
 
 @main
-def __main() -> Never:  # pyright: ignore[reportUnusedFunction]
+def __main() -> Never:
     # this should never run
     raise AssertionError

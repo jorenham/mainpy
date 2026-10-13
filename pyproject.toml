@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.9,<0.10"]
+requires = ["uv_build>=0.13,<0.14"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -44,17 +44,15 @@ Funding = "https://github.com/sponsors/jorenham"
 
 [dependency-groups]
 dev = [
-    "uvloop>=0.22.1; sys_platform != 'win32'",
-    "typing_extensions>=4.15.0",
+    "uvloop>=0.23.0; sys_platform != 'win32'",
+    "typing_extensions==4.16.0",
 
-    "mypy[faster-cache]>=1.19.1",
-    "basedpyright>=1.37.3",
-    "codespell>=2.4.1",
-    "pytest>=9.0.2",
-    "ruff>=0.14.14",
-
-    "tox>=4.34.1",
-    "sp-repo-review[cli]>=2025.11.21",
+    "mypy[faster-cache]==2.4.0",
+    "basedpyright==1.40.2",
+    "codespell==2.4.3",
+    "pytest==9.1.1",
+    "ruff==0.17.0",
+    "sp-repo-review[cli]==2026.8.14",
 ]
 
 
@@ -109,6 +107,7 @@ ignore = [
     "PC170", # no .rst
     "PC180", # no .css or .js
     "RTD",   # no RTD
+    "SEC001", # TODO: zizmor
 ]
 
 
@@ -122,9 +121,9 @@ src = ["mainpy", "tests"]
 
 [tool.ruff.lint]
 ignore = [
-    "ANN401",  # flake8-annotations: any-type
-    "PLC0415", # pylint: import-outside-top-level
-    "RUF067",  # ruff: non-empty-init-module
+    "any-type",  # flake8-annotations: any-type
+    "import-outside-top-level", # pylint: import-outside-top-level
+    "non-empty-init-module",  # ruff: non-empty-init-module
 ]
 preview = true
 select = [
@@ -183,14 +182,14 @@ select = [
 ]
 [tool.ruff.lint.per-file-ignores]
 "examples/*" = [
-    "INP001", # flake8-no-pep420: implicit-namespace-package
-    "T201",   # flake8-print: print
+    "implicit-namespace-package", # flake8-no-pep420: implicit-namespace-package
+    "print",   # flake8-print: print
 ]
 "tests/*" = [
     "S",      # flake8-bandit
     "ANN",    # flake8-annotations
-    "ARG001", # flake8-unused-arguments: unused-function-argument
-    "SLF001", # flake8-self: private-member-access
+    "unused-function-argument", # flake8-unused-arguments: unused-function-argument
+    "private-member-access", # flake8-self: private-member-access
 ]
 
 [tool.ruff.lint.isort]
