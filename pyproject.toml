@@ -120,9 +120,9 @@ src = ["mainpy", "tests"]
 
 [tool.ruff.lint]
 ignore = [
-    "ANN401",  # flake8-annotations: any-type
-    "PLC0415", # pylint: import-outside-top-level
-    "RUF067",  # ruff: non-empty-init-module
+    "any-type",  # flake8-annotations: any-type
+    "import-outside-top-level", # pylint: import-outside-top-level
+    "non-empty-init-module",  # ruff: non-empty-init-module
 ]
 preview = true
 select = [
@@ -181,14 +181,14 @@ select = [
 ]
 [tool.ruff.lint.per-file-ignores]
 "examples/*" = [
-    "INP001", # flake8-no-pep420: implicit-namespace-package
-    "T201",   # flake8-print: print
+    "implicit-namespace-package", # flake8-no-pep420: implicit-namespace-package
+    "print",   # flake8-print: print
 ]
 "tests/*" = [
     "S",      # flake8-bandit
     "ANN",    # flake8-annotations
-    "ARG001", # flake8-unused-arguments: unused-function-argument
-    "SLF001", # flake8-self: private-member-access
+    "unused-function-argument", # flake8-unused-arguments: unused-function-argument
+    "private-member-access", # flake8-self: private-member-access
 ]
 
 [tool.ruff.lint.isort]
