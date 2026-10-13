@@ -5,33 +5,32 @@ build-backend = "uv_build"
 [tool.uv.build-backend]
 module-root = ""
 
-
 [project]
 name = "mainpy"
 description = "Simplify your project entrypoint with @main"
 version = "1.5.1.dev0"
 authors = [
-    {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
+  { name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com" },
 ]
 license = "MIT"
 license-files = ["LICENSE"]
 readme = "README.md"
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Programming Language :: Python :: 3.15",
-    "Typing :: Typed",
+  "Development Status :: 5 - Production/Stable",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
+  "Typing :: Typed",
 ]
 requires-python = ">=3.11"
 dependencies = []
 
 [project.optional-dependencies]
 uvloop = [
-    "uvloop>=0.18.0; sys_platform != 'win32'",
+  "uvloop>=0.18.0; sys_platform != 'win32'",
 ]
 
 [project.urls]
@@ -41,25 +40,23 @@ Issues = "https://github.com/jorenham/mainpy/issues"
 Changelog = "https://github.com/jorenham/mainpy/releases"
 Funding = "https://github.com/sponsors/jorenham"
 
-
 [dependency-groups]
 dev = [
-    "uvloop>=0.23.0; sys_platform != 'win32'",
-    "typing_extensions==4.16.0",
+  "uvloop>=0.23.0; sys_platform != 'win32'",
+  "typing_extensions==4.16.0",
 
-    "mypy[faster-cache]==2.4.0",
-    "basedpyright==1.40.2",
-    "codespell==2.4.3",
-    "pytest==9.1.1",
-    "ruff==0.17.0",
-    "sp-repo-review[cli]==2026.8.14",
+  "mypy[faster-cache]==2.4.0",
+  "basedpyright==1.40.2",
+  "codespell==2.4.3",
+  "dprint-py==0.61.1.0",
+  "pytest==9.1.1",
+  "ruff==0.17.0",
+  "sp-repo-review[cli]==2026.8.14",
 ]
-
 
 [tool.codespell]
 context = 2
 skip = "uv.lock"
-
 
 [tool.pytest.ini_options]
 minversion = "9.0"
@@ -69,7 +66,6 @@ log_level = "INFO"
 testpaths = ["tests"]
 strict = true
 
-
 [tool.basedpyright]
 ignore = ["**/.venv", "examples"]
 include = ["mainpy", "tests"]
@@ -78,8 +74,7 @@ stubPath = "."
 typeCheckingMode = "all"
 venv = ".venv"
 venvPath = "."
-reportUnreachable = false         # unavoidable with `sys.version_info` conditionals
-
+reportUnreachable = false # unavoidable with `sys.version_info` conditionals
 
 [tool.mypy]
 packages = ["mainpy", "tests"]
@@ -98,17 +93,15 @@ disallow_any_expr = false
 disallow_any_explicit = false
 disallow_any_decorated = false
 
-
 [tool.repo-review]
 ignore = [
-    "PY004", # no docs
-    "PY006", # no pre-commit
-    "PC110", # no autoformat
-    "PC170", # no .rst
-    "PC180", # no .css or .js
-    "RTD",   # no RTD
+  "PY004", # no docs
+  "PY006", # no pre-commit
+  "PC110", # no autoformat
+  "PC170", # no .rst
+  "PC180", # no .css or .js
+  "RTD", # no RTD
 ]
-
 
 [tool.ruff]
 extend-exclude = [".github", ".tox", ".vscode", "dist"]
@@ -120,75 +113,75 @@ src = ["mainpy", "tests"]
 
 [tool.ruff.lint]
 ignore = [
-    "any-type",  # flake8-annotations: any-type
-    "import-outside-top-level", # pylint: import-outside-top-level
-    "non-empty-init-module",  # ruff: non-empty-init-module
+  "any-type", # flake8-annotations: any-type
+  "import-outside-top-level", # pylint: import-outside-top-level
+  "non-empty-init-module", # ruff: non-empty-init-module
 ]
 preview = true
 select = [
-    "F",      # pyflakes
-    "E",      # pycodestyle error
-    "W",      # pycodestyle warning
-    "I",      # isort
-    "N",      # pep8-naming
-    "UP",     # pyupgrade
-    "YTT",    # flake8-2020
-    "ANN",    # flake8-annotations
-    "ASYNC",  # flake8-async
-    "ASYNC1", # flake8-trio
-    "S",      # flake8-bandit
-    "BLE",    # flake8-blind-except
-    "B",      # flake8-bugbear
-    "A",      # flake8-builtins
-    "COM",    # flake8-commas
-    "C4",     # flake8-comprehensions
-    "DTZ",    # flake8-datetimez
-    "T10",    # flake8-debugger
-    "EXE",    # flake8-executable
-    "FA",     # flake8-future-annotations
-    "ISC",    # flake8-implicit-str-concat
-    "ICN",    # flake8-import-conventions
-    "G",      # flake8-logging-format
-    "INP",    # flake8-no-pep420
-    "PIE",    # flake8-pie
-    "T20",    # flake8-print
-    "PYI",    # flake8-pyi
-    "PT",     # flake8-pytest-style
-    "Q",      # flake8-quotes
-    "RSE",    # flake8-raise
-    "RET",    # flake8-return
-    "SLF",    # flake8-self
-    "SLOT",   # flake8-slots
-    "SIM",    # flake8-simplify
-    "TID",    # flake8-tidy-imports
-    "TCH",    # flake8-type-checking
-    "ARG",    # flake8-unused-arguments
-    "PTH",    # flake8-use-pathlib
-    "TD",     # flake8-todos
-    "FIX",    # flake8-fixme
-    "ERA",    # eradicate
-    "PD",     # pandas-vet
-    "PGH",    # pygrep-hooks
-    "PL",     # pylint
-    "TRY",    # tryceratops
-    "FLY",    # flynt
-    "NPY",    # numpy
-    "AIR",    # airflow
-    "PERF",   # perflint,
-    "FURB",   # refurb
-    "LOG",    # flake8-logging
-    "RUF",    # ruff
+  "F", # pyflakes
+  "E", # pycodestyle error
+  "W", # pycodestyle warning
+  "I", # isort
+  "N", # pep8-naming
+  "UP", # pyupgrade
+  "YTT", # flake8-2020
+  "ANN", # flake8-annotations
+  "ASYNC", # flake8-async
+  "ASYNC1", # flake8-trio
+  "S", # flake8-bandit
+  "BLE", # flake8-blind-except
+  "B", # flake8-bugbear
+  "A", # flake8-builtins
+  "COM", # flake8-commas
+  "C4", # flake8-comprehensions
+  "DTZ", # flake8-datetimez
+  "T10", # flake8-debugger
+  "EXE", # flake8-executable
+  "FA", # flake8-future-annotations
+  "ISC", # flake8-implicit-str-concat
+  "ICN", # flake8-import-conventions
+  "G", # flake8-logging-format
+  "INP", # flake8-no-pep420
+  "PIE", # flake8-pie
+  "T20", # flake8-print
+  "PYI", # flake8-pyi
+  "PT", # flake8-pytest-style
+  "Q", # flake8-quotes
+  "RSE", # flake8-raise
+  "RET", # flake8-return
+  "SLF", # flake8-self
+  "SLOT", # flake8-slots
+  "SIM", # flake8-simplify
+  "TID", # flake8-tidy-imports
+  "TCH", # flake8-type-checking
+  "ARG", # flake8-unused-arguments
+  "PTH", # flake8-use-pathlib
+  "TD", # flake8-todos
+  "FIX", # flake8-fixme
+  "ERA", # eradicate
+  "PD", # pandas-vet
+  "PGH", # pygrep-hooks
+  "PL", # pylint
+  "TRY", # tryceratops
+  "FLY", # flynt
+  "NPY", # numpy
+  "AIR", # airflow
+  "PERF", # perflint,
+  "FURB", # refurb
+  "LOG", # flake8-logging
+  "RUF", # ruff
 ]
 [tool.ruff.lint.per-file-ignores]
 "examples/*" = [
-    "implicit-namespace-package", # flake8-no-pep420: implicit-namespace-package
-    "print",   # flake8-print: print
+  "implicit-namespace-package", # flake8-no-pep420: implicit-namespace-package
+  "print", # flake8-print: print
 ]
 "tests/*" = [
-    "S",      # flake8-bandit
-    "ANN",    # flake8-annotations
-    "unused-function-argument", # flake8-unused-arguments: unused-function-argument
-    "private-member-access", # flake8-self: private-member-access
+  "S", # flake8-bandit
+  "ANN", # flake8-annotations
+  "unused-function-argument", # flake8-unused-arguments: unused-function-argument
+  "private-member-access", # flake8-self: private-member-access
 ]
 
 [tool.ruff.lint.isort]
@@ -212,7 +205,6 @@ docstring-code-format = true
 indent-style = "space"
 line-ending = "lf"
 quote-style = "single"
-
 
 [tool.tox]
 legacy_tox_ini = """

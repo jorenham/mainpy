@@ -1,0 +1,28 @@
+{
+  "json": {
+    "array.preferSingleLine": true,
+    "jsonTrailingCommaFiles": [".vscode/extensions.json", ".vscode/settings.json"],
+    "lineWidth": 88,
+  },
+  "markdown": {
+    "emphasisKind": "asterisks",
+    "lineWidth": 88,
+    "html.indentWidth": 4,
+    "html.selfClosingSpace": false,
+  },
+  "toml": {
+    "lineWidth": 88,
+  },
+  "yaml": {
+    "braceSpacing": false,
+    "formatComments": true,
+    "printWidth": 88,
+  },
+  "excludes": ["**/*.lock", "dist/"],
+  "plugins": [
+    "npm:dprint-plugin-yaml@0.6.0",
+    "npm:@dprint/json@0.25.2",
+    "npm:@dprint/markdown@0.26.0",
+    "npm:@dprint/toml@0.9.0",
+  ],
+}
