@@ -93,7 +93,7 @@ def test_async(monkeypatch: pytest.MonkeyPatch) -> None:
     assert result[0] == 'spam'
     assert callable(app)
     assert isinstance(
-        asyncio.get_event_loop_policy(),
+        asyncio.get_event_loop_policy(),  # pyright: ignore[reportDeprecated]
         asyncio.DefaultEventLoopPolicy,
     )
 
@@ -115,7 +115,7 @@ def test_async_implicit(
     assert result[0] == 'spam'
     assert callable(app)
     assert isinstance(
-        asyncio.get_event_loop_policy(),
+        asyncio.get_event_loop_policy(),  # pyright: ignore[reportDeprecated]
         asyncio.DefaultEventLoopPolicy,
     )
 
