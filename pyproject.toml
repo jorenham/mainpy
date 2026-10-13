@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.9,<0.10"]
+requires = ["uv_build>=0.13,<0.14"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -44,17 +44,15 @@ Funding = "https://github.com/sponsors/jorenham"
 
 [dependency-groups]
 dev = [
-    "uvloop>=0.22.1; sys_platform != 'win32'",
-    "typing_extensions>=4.15.0",
+    "uvloop>=0.23.0; sys_platform != 'win32'",
+    "typing_extensions==4.16.0",
 
-    "mypy[faster-cache]>=1.19.1",
-    "basedpyright>=1.37.3",
-    "codespell>=2.4.1",
-    "pytest>=9.0.2",
-    "ruff>=0.14.14",
-
-    "tox>=4.34.1",
-    "sp-repo-review[cli]>=2025.11.21",
+    "mypy[faster-cache]==2.4.0",
+    "basedpyright==1.40.2",
+    "codespell==2.4.3",
+    "pytest==9.1.1",
+    "ruff==0.17.0",
+    "sp-repo-review[cli]==2026.8.14",
 ]
 
 
