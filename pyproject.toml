@@ -107,6 +107,7 @@ ignore = [
     "PC170", # no .rst
     "PC180", # no .css or .js
     "RTD",   # no RTD
+    "SEC001", # TODO: zizmor
 ]
 
 
