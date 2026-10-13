@@ -184,7 +184,7 @@ features that you shouldn't.
 You can install the lowest supported Python version with
 
 ```bash
-uv sync --python 3.9
+uv sync --python 3.11
 ```
 
 ### Testing
