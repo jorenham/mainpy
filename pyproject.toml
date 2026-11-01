@@ -48,9 +48,9 @@ dev = [
   "mypy[faster-cache]==2.4.0",
   "basedpyright==1.40.2",
   "codespell==2.4.3",
-  "dprint-py==0.61.1.0",
+  "dprint-py==0.64.3.0",
   "pytest==9.1.1",
-  "ruff==0.17.0",
+  "ruff==0.17.2",
   "sp-repo-review[cli]==2026.8.14",
 ]
 
